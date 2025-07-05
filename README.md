@@ -1,17 +1,27 @@
-# Talky-Backend
+# [Talky] - Frontend
+
+> 제 21회 한성공학경진대회 프론트엔드  
+> 상황별 대화 추천 서비스
+
+---
+
+## 📌 프로젝트 소개
+
+Talky는 언어장애인을 위한 자동 문장 추천 앱서비스입니다.  
+장소, 시간을 기반으로 문자을 추천하고, TTS를 이용해 텍스트를 음성으로 변환합니다.
 
 ---
 ## ✨기술 스택
 
 ### 백엔드 (Spring + FastAPI)
-| 구분 | 기술 |
-|------|------|
-| 언어 | Java 17, Python 3.10 |
-| 프레임워크 | Spring Boot, FastAPI |
-| ORM | JPA (Hibernate) |
-| DB | MySQL |
+| 구분 | 기술                             |
+|------|--------------------------------|
+| 언어 | Java 21, Python 3.10           |
+| 프레임워크 | Spring Boot, FastAPI           |
+| ORM | JPA (Hibernate)                |
+| DB | MySQL                          |
 | API 통신 | REST API (Spring ↔ FastAPI 연결) |
-| AI 모델 처리 | Python 기반 사용자 맞춤 문장 추천 |
+| AI 모델 처리 | Python 기반 사용자 맞춤 문장 추천         |
 
 ---
 
