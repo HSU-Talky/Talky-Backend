@@ -20,6 +20,7 @@ public class SecurityConfig {
     }
 
     @Bean
+    // JWT 토큰 형식 수정 예정
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
