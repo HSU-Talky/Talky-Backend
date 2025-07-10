@@ -35,7 +35,7 @@ public class NormalUser extends BaseEntity {
     private String emergencyTarget;
 
     @Column(name = "tts_speed")
-    private Long ttsSpeed;
+    private Double ttsSpeed;
 
     @Column(name = "tts_language")
     private String ttsLanguage;
@@ -49,7 +49,7 @@ public class NormalUser extends BaseEntity {
 
     @PrePersist
     public void setDefault(){
-        this.ttsSpeed = 50L;
+        this.ttsSpeed = 50.0;
         this.ttsLanguage = "ko";
         this.ttsGender = "female";
     }

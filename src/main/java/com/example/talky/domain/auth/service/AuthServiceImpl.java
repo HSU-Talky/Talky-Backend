@@ -54,8 +54,7 @@ public class AuthServiceImpl implements AuthService {
         
         return new SignUpRes(
                 savedGuardian.getId(),
-                "guardian",
-                null // 보호자는 연결 코드가 없음
+                "guardian"
         );
     }
     @Override
@@ -75,8 +74,8 @@ public class AuthServiceImpl implements AuthService {
         
         return new SignUpRes(
                 savedUser.getId(),
-                "normal",
-                connectionCode
+                "normal"
+
         );
     }
 
