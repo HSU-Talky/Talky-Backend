@@ -1,10 +1,15 @@
 package com.example.talky.domain.favorites.web.controller;
 
 import com.example.talky.domain.favorites.repository.FavoriteRepository;
+import com.example.talky.domain.favorites.service.FavoriteService;
+import com.example.talky.domain.favorites.web.dto.CreateFavoriteReq;
+import com.example.talky.domain.favorites.web.dto.CreateFavoriteRes;
 import com.example.talky.global.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -13,13 +18,30 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/favorite")
 public class FavoriteController {
 
-    private final FavoriteRepository favoriteRepository;
+    private final FavoriteService favoriteService;
 
     @GetMapping("/user")
-    public ResponseEntity<SuccessResponse<?>> findFavorite(Object tmp) {
+    public ResponseEntity<SuccessResponse<?>> findFavorite(
+            @RequestBody @Validated CreateFavoriteReq req) {
+
         // 1. JWT 정보와 RequestBody를 서비스계층에 위임
+        CreateFavoriteRes res;
+        try {
+            res = favoriteService.create(1L, req);
+        } catch (RuntimeException e) {
+            /**
+             * UserNotFoundException이 없으므로
+             * 서비스계층에서 normal_user = null일 시,
+             * RuntimeError를 컨트롤러로 던짐. 여기서 catch
+             */
+            log.info("UserNotFoundException : {}", e);
+            return ResponseEntity.notFound().build();
+        }
+
         // 2. return ResponseEntity
-        return null;
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(SuccessResponse.created(res));
     }
 
     @PostMapping("/add")

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class FavoriteServiceImple implements FavoriteService {
+public class FavoriteServiceImpl implements FavoriteService {
 
     private final FavoriteRepository favoriteRepository;
     private final NormalUserRepository normalUserRepository;
