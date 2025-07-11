@@ -7,10 +7,13 @@ import com.example.talky.domain.favorites.repository.FavoriteRepository;
 import com.example.talky.domain.favorites.web.dto.AllFavoriteRes;
 import com.example.talky.domain.favorites.web.dto.CreateFavoriteReq;
 import com.example.talky.domain.favorites.web.dto.CreateFavoriteRes;
+import com.example.talky.domain.favorites.web.dto.DeleteFavoriteReq;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -60,5 +63,22 @@ public class FavoriteServiceImpl implements FavoriteService {
                         ))
                         .collect(Collectors.toList())
         );
+    }
+
+    // 즐겨찾기 삭제
+    @Transactional
+    @Override
+    public void delete(Long normalId, DeleteFavoriteReq req) {
+        String sentence = req.getSentence();
+        NormalUser user = normalUserRepository.findById(normalId)
+                .orElseThrow(RuntimeException::new);
+        Favorite favorite = favoriteRepository.findById(normalId)
+                .orElseThrow(RuntimeException::new);
+
+        if(!favorite.getSentence().equals(sentence)) {
+            throw new RuntimeException();
+        }
+
+        favoriteRepository.delete(favorite);
     }
 }
