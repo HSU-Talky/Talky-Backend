@@ -1,10 +1,10 @@
 package com.example.talky.domain.favorites.web.controller;
 
-import com.example.talky.domain.favorites.repository.FavoriteRepository;
 import com.example.talky.domain.favorites.service.FavoriteService;
 import com.example.talky.domain.favorites.web.dto.AllFavoriteRes;
 import com.example.talky.domain.favorites.web.dto.CreateFavoriteReq;
 import com.example.talky.domain.favorites.web.dto.CreateFavoriteRes;
+import com.example.talky.domain.favorites.web.dto.DeleteFavoriteReq;
 import com.example.talky.global.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,9 +64,14 @@ public class FavoriteController {
     }
 
     @DeleteMapping
-    public ResponseEntity<SuccessResponse<?>> deleteFavorite(Object tmp) {
+    public ResponseEntity<SuccessResponse<?>> deleteFavorite(
+            @Validated @RequestBody DeleteFavoriteReq req
+    ) {
         // 1. JWT를 통해 User 인증하고, 서비스 계층에 위임
+        favoriteService.delete(1L, req);
         // 2. return ResponseEntity
-        return null;
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(SuccessResponse.empty());
     }
 }
