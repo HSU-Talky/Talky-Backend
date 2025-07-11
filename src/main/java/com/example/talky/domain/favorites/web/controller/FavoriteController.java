@@ -2,6 +2,7 @@ package com.example.talky.domain.favorites.web.controller;
 
 import com.example.talky.domain.favorites.repository.FavoriteRepository;
 import com.example.talky.domain.favorites.service.FavoriteService;
+import com.example.talky.domain.favorites.web.dto.AllFavoriteRes;
 import com.example.talky.domain.favorites.web.dto.CreateFavoriteReq;
 import com.example.talky.domain.favorites.web.dto.CreateFavoriteRes;
 import com.example.talky.global.response.SuccessResponse;
@@ -21,10 +22,19 @@ public class FavoriteController {
     private final FavoriteService favoriteService;
 
     @GetMapping("/")
-    public ResponseEntity<SuccessResponse<?>> getAllFavorite(Object tmp) {
+    public ResponseEntity<SuccessResponse<?>> getAllFavorite() {
         // 1. JWT 인증 | DTO -> Entity를 서비스계층에 위임
+        AllFavoriteRes res;
+        try {
+            res = favoriteService.getAllFavorite(1L);
+        } catch (RuntimeException e) {
+            log.info(log.info("UserNotFoundException : {}", e.getMessage(), e);)
+            return ResponseEntity.notFound().build();
+        }
         // 2. return ResponseEntity
-        return null;
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(SuccessResponse.ok(res));
     }
 
     @PostMapping
