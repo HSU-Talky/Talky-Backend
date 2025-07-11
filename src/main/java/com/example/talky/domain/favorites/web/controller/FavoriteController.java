@@ -28,7 +28,7 @@ public class FavoriteController {
         try {
             res = favoriteService.getAllFavorite(1L);
         } catch (RuntimeException e) {
-            log.info(log.info("UserNotFoundException : {}", e.getMessage(), e);)
+            log.info("UserNotFoundException : {}", e.getMessage(), e);
             return ResponseEntity.notFound().build();
         }
         // 2. return ResponseEntity
