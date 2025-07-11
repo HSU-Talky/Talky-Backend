@@ -21,9 +21,10 @@ public class FavoriteController {
 
     private final FavoriteService favoriteService;
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<SuccessResponse<?>> getAllFavorite() {
         // 1. JWT 인증 | DTO -> Entity를 서비스계층에 위임
+        // FIXME
         AllFavoriteRes res;
         try {
             res = favoriteService.getAllFavorite(1L);
@@ -58,11 +59,11 @@ public class FavoriteController {
 
         // 2. return ResponseEntity
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(HttpStatus.CREATED)
                 .body(SuccessResponse.created(res));
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping
     public ResponseEntity<SuccessResponse<?>> deleteFavorite(Object tmp) {
         // 1. JWT를 통해 User 인증하고, 서비스 계층에 위임
         // 2. return ResponseEntity
