@@ -20,6 +20,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Override
     public CreateFavoriteRes create(Long nomalId, CreateFavoriteReq createFavoriteReq) {
+
         // 아직 normalUserRepository 예외에 NotFoundException이 없음
         NormalUser user = normalUserRepository
                 .findById(nomalId)
@@ -32,6 +33,7 @@ public class FavoriteServiceImpl implements FavoriteService {
                 .build();
 
         Favorite res = favoriteRepository.save(favorite);
+
         return new CreateFavoriteRes(res.getFavoriteId());
     }
 }

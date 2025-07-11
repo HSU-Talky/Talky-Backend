@@ -27,7 +27,7 @@ public class FavoriteController {
         return null;
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<SuccessResponse<?>> createFavorite(
             @RequestBody @Validated CreateFavoriteReq req) {
 
