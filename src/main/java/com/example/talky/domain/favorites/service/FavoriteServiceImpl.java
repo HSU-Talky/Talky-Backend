@@ -21,7 +21,11 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public CreateFavoriteRes create(Long nomalId, CreateFavoriteReq createFavoriteReq) {
 
-        // 아직 normalUserRepository 예외에 NotFoundException이 없음
+        /**
+         * NormalUserRepository에 UserNotFoundException 없음
+         * FIXME
+         */
+
         NormalUser user = normalUserRepository
                 .findById(nomalId)
                 .orElseThrow(RuntimeException::new);

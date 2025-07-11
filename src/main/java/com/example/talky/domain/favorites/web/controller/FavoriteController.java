@@ -21,7 +21,7 @@ public class FavoriteController {
     private final FavoriteService favoriteService;
 
     @GetMapping("/")
-    public ResponseEntity<SuccessResponse<?>> addFavorite(Object tmp) {
+    public ResponseEntity<SuccessResponse<?>> getAllFavorite(Object tmp) {
         // 1. JWT 인증 | DTO -> Entity를 서비스계층에 위임
         // 2. return ResponseEntity
         return null;
@@ -40,8 +40,9 @@ public class FavoriteController {
              * UserNotFoundException이 없으므로
              * 서비스계층에서 normal_user = null일 시,
              * RuntimeError를 컨트롤러로 던짐. 여기서 catch
+             * FIXME
              */
-            log.info("UserNotFoundException : {}", e);
+            log.info("UserNotFoundException : {}", e.getMessage(), e);
             return ResponseEntity.notFound().build();
         }
 
