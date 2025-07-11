@@ -3,6 +3,7 @@ package com.example.talky.domain.favorites.service;
 import com.example.talky.domain.auth.entity.NormalUser;
 import com.example.talky.domain.auth.repository.NormalUserRepository;
 import com.example.talky.domain.favorites.entity.Favorite;
+import com.example.talky.domain.favorites.exception.InvalidFavoriteSentence;
 import com.example.talky.domain.favorites.repository.FavoriteRepository;
 import com.example.talky.domain.favorites.web.dto.AllFavoriteRes;
 import com.example.talky.domain.favorites.web.dto.CreateFavoriteReq;
@@ -76,7 +77,7 @@ public class FavoriteServiceImpl implements FavoriteService {
                 .orElseThrow(RuntimeException::new);
 
         if(!favorite.getSentence().equals(sentence)) {
-            throw new RuntimeException();
+            throw new InvalidFavoriteSentence();
         }
 
         favoriteRepository.delete(favorite);
