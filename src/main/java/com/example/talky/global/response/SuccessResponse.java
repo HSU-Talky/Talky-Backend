@@ -22,7 +22,7 @@ public class SuccessResponse<T> extends BaseResponse{
         this.data = data;
     }
 
-    public static <T> SuccessResponse<T> OK(T data){
+    public static <T> SuccessResponse<T> ok(T data){
         return new SuccessResponse<>(data, SuccessResponseCode.SUCCESS_OK);
     }
 

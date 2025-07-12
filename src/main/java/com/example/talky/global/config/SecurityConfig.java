@@ -29,6 +29,7 @@ public class SecurityConfig {
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/favorite/**").permitAll()
                         .anyRequest().authenticated());
 
         return http.build();
