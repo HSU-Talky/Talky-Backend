@@ -33,7 +33,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("taulky/auth/**").permitAll()
                         .requestMatchers("talky/favorite/**").hasRole("USER")
-                        .anyRequest().authenticated()
                         .anyRequest().authenticated())
                         .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 ;
