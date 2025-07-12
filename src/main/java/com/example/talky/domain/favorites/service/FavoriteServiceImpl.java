@@ -1,7 +1,6 @@
 package com.example.talky.domain.favorites.service;
 
 import com.example.talky.domain.auth.entity.NormalUser;
-import com.example.talky.domain.auth.repository.NormalUserRepository;
 import com.example.talky.domain.favorites.entity.Favorite;
 import com.example.talky.domain.favorites.exception.ConflictFavoriteException;
 import com.example.talky.domain.favorites.exception.FavoriteNorFoundException;

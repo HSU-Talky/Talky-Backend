@@ -3,6 +3,7 @@ package com.example.talky.domain.auth.entity;
 import com.example.talky.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
@@ -10,6 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @DiscriminatorValue("NORMAL")
+@SuperBuilder
 public class NormalUser extends User{
 
     @Column(name = "connection_code")

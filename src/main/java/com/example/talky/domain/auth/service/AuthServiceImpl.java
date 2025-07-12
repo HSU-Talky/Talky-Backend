@@ -4,8 +4,6 @@ import com.example.talky.domain.auth.entity.Guardians;
 import com.example.talky.domain.auth.entity.NormalUser;
 import com.example.talky.domain.auth.exception.DuplicateLoginIdException;
 import com.example.talky.domain.auth.exception.InvalidUserTypeException;
-import com.example.talky.domain.auth.repository.GuardianRepository;
-import com.example.talky.domain.auth.repository.NormalUserRepository;
 import com.example.talky.domain.auth.web.dto.SignUpReq;
 import com.example.talky.domain.auth.web.dto.SignUpRes;
 import lombok.RequiredArgsConstructor;
