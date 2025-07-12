@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     List<Favorite> findAllByNormalUserId(Long normalUserId);
+    boolean existsByNormalUserIdAndSentence(Long normalUserId, String sentence);
 }
