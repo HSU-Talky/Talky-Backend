@@ -28,7 +28,7 @@ public class FavoriteController {
         AllFavoriteRes res;
         try {
             res = favoriteService.getAllFavorite(1L);
-        } catch (RuntimeException e) {
+        } catch (NullPointerException e) {
             log.info("UserNotFoundException : {}", e.getMessage(), e);
             return ResponseEntity.notFound().build();
         }
@@ -46,7 +46,7 @@ public class FavoriteController {
         CreateFavoriteRes res;
         try {
             res = favoriteService.create(1L, req);
-        } catch (RuntimeException e) {
+        } catch (NullPointerException e) {
             /**
              * UserNotFoundException이 없으므로
              * 서비스계층에서 normal_user = null일 시,
