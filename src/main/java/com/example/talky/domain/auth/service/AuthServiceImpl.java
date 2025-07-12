@@ -3,6 +3,7 @@ package com.example.talky.domain.auth.service;
 import com.example.talky.domain.auth.entity.Guardians;
 import com.example.talky.domain.auth.entity.NormalUser;
 import com.example.talky.domain.auth.entity.User;
+import com.example.talky.domain.auth.exception.InvalidPasswordException;
 import com.example.talky.domain.auth.exception.UserNotFoundException;
 import com.example.talky.global.util.UserUtils;
 import com.example.talky.domain.auth.exception.DuplicateLoginIdException;
@@ -99,7 +100,7 @@ public class AuthServiceImpl implements AuthService {
 
         // 비밀번호 검증
         if (!bCryptPasswordEncoder.matches(loginReq.getPassword(), user.getPassword())) {
-            throw new InvalidUserTypeException();
+            throw new InvalidPasswordException();
         }
 
         // JWT 토큰 생성
@@ -111,8 +112,8 @@ public class AuthServiceImpl implements AuthService {
         return new LoginRes(
                 user.getId(),
                 userType,
-                token,
-                user.getUsername()
+                user.getUsername(),
+                token
         );
     }
 
