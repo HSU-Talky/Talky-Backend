@@ -31,8 +31,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("taulky/auth/**").permitAll()
-                        .requestMatchers("talky/favorite/**").hasRole("USER")
+                        .requestMatchers("talky/auth/**").permitAll()
+                        .requestMatchers("talky/favorite/**").hasRole("NORMAL")
                         .anyRequest().authenticated())
                         .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 ;
