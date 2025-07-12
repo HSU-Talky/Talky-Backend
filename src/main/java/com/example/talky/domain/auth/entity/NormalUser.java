@@ -7,23 +7,10 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class NormalUser extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "normal_id")
-    private Long id;
-
-    @Column(name="login_id")
-    private String loginId;
-
-    @Column(name = "password")
-    private String password;
-
-    @Column(name = "username")
-    private String username;
+@DiscriminatorValue("NORMAL")
+public class NormalUser extends User{
 
     @Column(name = "connection_code")
     private String connectionCode;
@@ -47,8 +34,15 @@ public class NormalUser extends BaseEntity {
     @JoinColumn(name = "guardian_id")
     private Guardians guardians;
 
+    @Override
+    public String getRole() {
+        return "ROLE_NORMAL";
+    }
+
+
     @PrePersist
     public void setDefault(){
+        this.emergencyTarget = "119";
         this.ttsSpeed = 50.0;
         this.ttsLanguage = "ko";
         this.ttsGender = "female";
