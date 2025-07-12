@@ -1,6 +1,7 @@
 package com.example.talky.global.jwt;
 
 import com.example.talky.domain.auth.entity.User;
+import com.example.talky.global.security.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -8,7 +9,9 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -26,6 +29,8 @@ public class JwtTokenProvider {
     private long expiration; // 밀리초 단위
 
     private Key key;
+
+    private final CustomUserDetailsService customUserDetailsService;
 
     @PostConstruct
     public void init() {
@@ -72,6 +77,7 @@ public class JwtTokenProvider {
         String loginId = claims.getSubject();
 
         // 1. DB에서 유저 조회
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(loginId);
 
         // 2. CustomUserDetails 생성
 
@@ -79,7 +85,11 @@ public class JwtTokenProvider {
         // principal: 사용자 정보 객체
         // credentials: 인증 수단 (보통 비밀번호)
         // authorities: 권한 목록
-
+        return new UsernamePasswordAuthenticationToken(
+                userDetails,
+                null,
+                userDetails.getAuthorities()
+        );
 
     }
 
