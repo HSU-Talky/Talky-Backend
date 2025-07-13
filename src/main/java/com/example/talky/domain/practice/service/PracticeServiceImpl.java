@@ -21,16 +21,15 @@ public class PracticeServiceImpl implements PracticeService {
     @Override
     public GetAllRes getPractice(Long pracId) {
         return new GetAllRes(
-                questionRepository.findById(pracId).stream()
-                        .map(q -> new GetAllRes.AllQuestion(
-                                q.getId(),
-                                q.getSentence(),
-                                q.getAnswers().stream()
-                                        .map(a -> new GetAllRes.AllQuestion.AnswerSet(
-                                                a.getAnswer(),
-                                                a.getNextQuestionId()
-                                        ))
-                                        .collect(Collectors.toList())))
+                questionRepository.findById(pracId)
+                        .orElseThrow(NullPointerException::new),
+
+                AnswerRepository.findAllByQuestionId(pracId)
+                        .stream()
+                        .map(a -> new GetAllRes.AnswerSet(
+                                a.getAnswer(),
+                                a.getNextQuestionId()
+                        ))
                         .collect(Collectors.toList()));
     }
 }
