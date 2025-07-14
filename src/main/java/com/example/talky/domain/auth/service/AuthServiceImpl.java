@@ -2,18 +2,25 @@ package com.example.talky.domain.auth.service;
 
 import com.example.talky.domain.auth.entity.Guardians;
 import com.example.talky.domain.auth.entity.NormalUser;
+import com.example.talky.domain.auth.entity.User;
+import com.example.talky.domain.auth.exception.InvalidPasswordException;
+import com.example.talky.domain.auth.exception.UserNotFoundException;
+import com.example.talky.global.util.UserUtils;
 import com.example.talky.domain.auth.exception.DuplicateLoginIdException;
 import com.example.talky.domain.auth.exception.InvalidUserTypeException;
 import com.example.talky.domain.auth.repository.GuardianRepository;
 import com.example.talky.domain.auth.repository.NormalUserRepository;
+import com.example.talky.domain.auth.web.dto.LoginReq;
+import com.example.talky.domain.auth.web.dto.LoginRes;
 import com.example.talky.domain.auth.web.dto.SignUpReq;
 import com.example.talky.domain.auth.web.dto.SignUpRes;
+import com.example.talky.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Random;
+
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +28,9 @@ public class AuthServiceImpl implements AuthService {
     private final GuardianRepository guardianRepository;
     private final NormalUserRepository normalUserRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final UserUtils userUtils;
+
 
     @Override
     @Transactional
@@ -67,7 +77,7 @@ public class AuthServiceImpl implements AuthService {
                 .build();
         
         // 연결 코드 생성 (6자리 랜덤 숫자)
-        String connectionCode = generateConnectionCode();
+        String connectionCode = userUtils.generateConnectionCode();
         normalUser.setConnectionCode(connectionCode);
         
         NormalUser savedUser = normalUserRepository.save(normalUser);
@@ -79,13 +89,36 @@ public class AuthServiceImpl implements AuthService {
         );
     }
 
-    // 6자리 랜덤 숫자로 구성된 연결 코드 생성
-    private String generateConnectionCode() {
-        Random random = new Random();
-        StringBuilder code = new StringBuilder();
-        for (int i = 0; i < 6; i++) {
-            code.append(random.nextInt(10));
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public LoginRes login(LoginReq loginReq) {
+        // 사용자 찾기
+        User user = userUtils.findUserByLoginId(loginReq.getLoginId())
+                .orElseThrow(UserNotFoundException::new);
+
+        // 비밀번호 검증
+        if (!bCryptPasswordEncoder.matches(loginReq.getPassword(), user.getPassword())) {
+            throw new InvalidPasswordException();
         }
-        return code.toString();
+
+        // JWT 토큰 생성
+        String token = jwtTokenProvider.createToken(user);
+
+        // 사용자 유형 확인 및 응답 생성
+        String userType = userUtils.getUserType(user);
+
+        return new LoginRes(
+                user.getId(),
+                userType,
+                user.getUsername(),
+                token
+        );
     }
+
+
+
+
+
 }
