@@ -2,6 +2,7 @@ package com.example.talky.domain.practice.web.controller;
 
 import com.example.talky.domain.practice.service.PracticeService;
 import com.example.talky.domain.practice.web.dto.GetAllRes;
+import com.example.talky.global.response.ErrorResponse;
 import com.example.talky.global.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,9 @@ public class PracticeController {
 
     @GetMapping
     public ResponseEntity<SuccessResponse<?>> getPractice(Long pracId) {
+        if(pracId <=0 || pracId >= 8) {
+            throw new RuntimeException();
+        }
         // pracId를 서비스 계층에 던짐
         GetAllRes res = practiceService.getPractice(pracId);
         // 성공 결과 반환

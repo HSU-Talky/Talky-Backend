@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -21,14 +22,26 @@ public class PracticeServiceImpl implements PracticeService {
     @Override
     public GetAllRes getPractice(Long pracId) {
          return new GetAllRes(
-                questionRepository.findById(pracId)
-                        .orElseThrow(NullPointerException::new),
-
-                answerRepository.findAllByQuestionId(pracId).stream()
-                        .map(a -> new GetAllRes.AnswerSet(
-                                a.getAnswer(),
-                                a.getNextQuestionId()))
+                questionRepository.findAllByPracId(pracId)
+                        .stream()
+                        .map(q -> new GetAllRes.QuestionSet(
+                                q.getId(),
+                                q.getSentence(),
+                                q.getAnswers().stream()
+                                        .map(a -> new GetAllRes.QuestionSet.AnswerSet(
+                                                a.getAnswer(),
+                                                a.getNextQuestionId()
+                                        ))
+                                        .collect(Collectors.toList())
+                        ))
                         .collect(Collectors.toList())
+
+//                answerRepository.findAllByQuestionId(pracId)
+//                        .stream()
+//                        .map(a -> new GetAllRes.AnswerSet(
+//                                a.getAnswer(),
+//                                a.getNextQuestionId()))
+//                        .collect(Collectors.toList())
          );
     }
 }

@@ -1,5 +1,6 @@
 package com.example.talky.domain.practice.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,8 +20,11 @@ public class Question {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long pracId;
+
     private String sentence;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "question")
     private List<Answer> answers = new ArrayList<>();
 }
