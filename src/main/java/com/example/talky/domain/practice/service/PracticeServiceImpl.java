@@ -20,16 +20,15 @@ public class PracticeServiceImpl implements PracticeService {
     // pracId를 이용한 상황별 질문 및 답변 조회 로직. nextQuestionId를 던져서, 프론트엔드로부터 다음 질문을 연결하게끔 할 예정
     @Override
     public GetAllRes getPractice(Long pracId) {
-        return new GetAllRes(
+         return new GetAllRes(
                 questionRepository.findById(pracId)
                         .orElseThrow(NullPointerException::new),
 
-                AnswerRepository.findAllByQuestionId(pracId)
-                        .stream()
+                answerRepository.findAllByQuestionId(pracId).stream()
                         .map(a -> new GetAllRes.AnswerSet(
                                 a.getAnswer(),
-                                a.getNextQuestionId()
-                        ))
-                        .collect(Collectors.toList()));
+                                a.getNextQuestionId()))
+                        .collect(Collectors.toList())
+         );
     }
 }
