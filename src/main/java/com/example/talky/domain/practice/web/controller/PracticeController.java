@@ -1,5 +1,6 @@
 package com.example.talky.domain.practice.web.controller;
 
+import com.example.talky.domain.practice.exception.PracticeInvalidHttpParamException;
 import com.example.talky.domain.practice.service.PracticeService;
 import com.example.talky.domain.practice.web.dto.GetAllRes;
 import com.example.talky.global.response.ErrorResponse;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.security.InvalidParameterException;
 
 @Slf4j
 @RestController
@@ -24,7 +27,8 @@ public class PracticeController {
     @GetMapping
     public ResponseEntity<SuccessResponse<?>> getPractice(Long pracId) {
         if(pracId <=0 || pracId >= 8) {
-            throw new RuntimeException();
+            log.info("요청 파라미터의 값이 잘못되었습니다. prac_id = {}, ", pracId);
+            throw new PracticeInvalidHttpParamException();
         }
         // pracId를 서비스 계층에 던짐
         GetAllRes res = practiceService.getPractice(pracId);
