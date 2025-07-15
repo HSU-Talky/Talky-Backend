@@ -1,8 +1,9 @@
 package com.example.talky.domain.recommendation.service;
 
 import com.example.talky.domain.recommendation.web.dto.GetContextReq;
-import com.example.talky.domain.recommendation.web.dto.RcmdSentenceRes;
+import com.example.talky.global.response.SuccessResponse;
+import org.springframework.http.ResponseEntity;
 
 public interface RcmdService {
-    RcmdSentenceRes getAiRcmd(GetContextReq req);
+    ResponseEntity<SuccessResponse<?>> getAiRcmd(GetContextReq req);
 }
