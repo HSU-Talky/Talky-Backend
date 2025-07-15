@@ -11,5 +11,7 @@ public interface AuthService {
     SignUpRes createGuardianAccount(SignUpReq signUpReq);
     SignUpRes createNormalUserAccount(SignUpReq signUpReq);
     LoginRes login(LoginReq loginReq);
+    // 아이디 중복 확인
+    void checkIdAvailability(String loginId);
 
     }

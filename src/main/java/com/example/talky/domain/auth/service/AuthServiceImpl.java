@@ -118,6 +118,14 @@ public class AuthServiceImpl implements AuthService {
     }
 
 
+    @Override
+    public void checkIdAvailability(String loginId) {
+        if (guardianRepository.existsByLoginId(loginId) || normalUserRepository.existsByLoginId(loginId)) {
+            throw new DuplicateLoginIdException();
+        }
+    }
+
+
 
 
 
