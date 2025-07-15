@@ -33,10 +33,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/favorite/**").hasRole("NORMAL")
+                        .requestMatchers(("/prac/**")).hasRole("NORMAL")
                         .anyRequest().authenticated())
                         .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 ;
-
 
         return http.build();
     }
