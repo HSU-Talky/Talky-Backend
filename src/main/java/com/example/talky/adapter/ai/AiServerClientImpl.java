@@ -1,13 +1,12 @@
 package com.example.talky.adapter.ai;
 
-import com.example.talky.global.ai.dto.FromAiRes;
 import com.example.talky.global.ai.dto.ToAiReq;
 import com.example.talky.global.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -16,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class AiServerClientImpl implements AiServerClient {
 
@@ -42,9 +42,8 @@ public class AiServerClientImpl implements AiServerClient {
         if(responseEntity.getStatusCode().is2xxSuccessful()) {
             return responseEntity;
         } else {
-            // 새로운 예외 선언
-            // FIXME
-            throw new RuntimeException("Ai 서버 호출 실패" + responseEntity.getStatusCode());
+            log.info("AI 서버 호출 실패" + responseEntity.getStatusCode());
+            throw new RuntimeException("AI 서버 호출 실패" + responseEntity.getStatusCode());
         }
     }
 }

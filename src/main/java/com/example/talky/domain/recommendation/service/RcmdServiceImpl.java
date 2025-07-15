@@ -2,6 +2,7 @@ package com.example.talky.domain.recommendation.service;
 
 import com.example.talky.adapter.ai.AiServerClient;
 import com.example.talky.domain.favorites.entity.Favorite;
+import com.example.talky.domain.favorites.exception.FavoriteNorFoundException;
 import com.example.talky.domain.favorites.repository.FavoriteRepository;
 import com.example.talky.domain.recommendation.repository.ConversationRepository;
 import com.example.talky.domain.recommendation.repository.SpeechRepository;
@@ -43,7 +44,7 @@ public class RcmdServiceImpl implements RcmdService {
         if (favoriteIsPresent(normalId, choose)) {
             Favorite favorite = favoriteRepository
                     .findByNormalUserIdAndSentence(normalId, choose)
-                    .orElseThrow(RuntimeException::new); // 새로운 예외로 수정
+                    .orElseThrow(FavoriteNorFoundException::new);
             favorite.increseCount();
             favoriteRepository.save(favorite);
         }
