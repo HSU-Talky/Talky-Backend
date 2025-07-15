@@ -22,4 +22,8 @@ public class Favorite extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "normal_id")
     private NormalUser normalUser;
+
+    public void increseCount() {
+        this.count++;
+    }
 }
