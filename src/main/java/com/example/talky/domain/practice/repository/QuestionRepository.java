@@ -1,6 +1,6 @@
 package com.example.talky.domain.practice.repository;
 
-import com.example.talky.domain.practice.domain.Question;
+import com.example.talky.domain.practice.entity.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,5 @@
 package com.example.talky.domain.practice.web.dto;
 
-import com.example.talky.domain.practice.domain.Question;
-
 import java.util.List;
 
 public record GetAllRes(
