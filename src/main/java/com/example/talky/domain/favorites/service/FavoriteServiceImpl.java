@@ -1,7 +1,7 @@
 package com.example.talky.domain.favorites.service;
 
 import com.example.talky.domain.auth.entity.NormalUser;
-import com.example.talky.domain.auth.repository.NormalUserRepository;
+import com.example.talky.domain.auth.repository.UserRepository;
 import com.example.talky.domain.favorites.entity.Favorite;
 import com.example.talky.domain.favorites.exception.ConflictFavoriteException;
 import com.example.talky.domain.favorites.exception.FavoriteNorFoundException;
@@ -23,8 +23,7 @@ import java.util.stream.Collectors;
 public class FavoriteServiceImpl implements FavoriteService {
 
     private final FavoriteRepository favoriteRepository;
-    private final NormalUserRepository normalUserRepository;
-
+    private final UserRepository userRepository;
     // 새 즐겨찾기 생성
     @Override
     public CreateFavoriteRes create(Long normalId, CreateFavoriteReq createFavoriteReq) {
@@ -40,7 +39,7 @@ public class FavoriteServiceImpl implements FavoriteService {
          * FIXME
          * NullPointerException -> UserNotFoundException
          */
-        NormalUser user = normalUserRepository
+        NormalUser user = (NormalUser) userRepository
                 .findById(normalId)
                 .orElseThrow(NullPointerException::new);
 
@@ -63,7 +62,7 @@ public class FavoriteServiceImpl implements FavoriteService {
          * FIXME
          * NullPointerException -> UserNotFoundException
          */
-        NormalUser user = normalUserRepository
+        NormalUser user = (NormalUser) userRepository
                 .findById(normalId)
                 .orElseThrow(NullPointerException::new);
 
@@ -88,7 +87,7 @@ public class FavoriteServiceImpl implements FavoriteService {
          * FIXME
          * NullPointerException -> UserNotFoundException
          */
-        NormalUser user = normalUserRepository.findById(normalId)
+        NormalUser user = (NormalUser) userRepository.findById(normalId)
                 .orElseThrow(NullPointerException::new);
         Favorite favorite = favoriteRepository.findById(normalId)
                 .orElseThrow(FavoriteNorFoundException::new);
