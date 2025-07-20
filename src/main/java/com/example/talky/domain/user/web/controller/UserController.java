@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users/me")
 @RequiredArgsConstructor
 public class UserController {
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping("/profile")
     public ResponseEntity<SuccessResponse<?>> getProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
