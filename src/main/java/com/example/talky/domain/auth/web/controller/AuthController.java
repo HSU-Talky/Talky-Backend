@@ -41,7 +41,7 @@ public class AuthController {
         authService.checkIdAvailability(loginId);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(SuccessResponse.ok(null));
+                .body(SuccessResponse.empty());
     }
 
 }
