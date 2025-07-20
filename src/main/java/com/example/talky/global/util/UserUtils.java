@@ -3,35 +3,40 @@ package com.example.talky.global.util;
 import com.example.talky.domain.auth.entity.Guardians;
 import com.example.talky.domain.auth.entity.NormalUser;
 import com.example.talky.domain.auth.entity.User;
-import com.example.talky.domain.auth.repository.GuardianRepository;
-import com.example.talky.domain.auth.repository.NormalUserRepository;
+//import com.example.talky.domain.auth.repository.GuardianRepository;
+//import com.example.talky.domain.auth.repository.NormalUserRepository;
+import com.example.talky.domain.auth.repository.UserRepository;
 import com.example.talky.global.exception.BaseException;
 import com.example.talky.global.response.code.ErrorResponseCode;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 import java.util.Random;
 
 @Component
+@RequiredArgsConstructor
 public class UserUtils {
 
-    private final NormalUserRepository normalUserRepository;
-    private final GuardianRepository guardianRepository;
+    private final UserRepository userRepository;
 
-    public UserUtils(NormalUserRepository normalUserRepository, GuardianRepository guardianRepository) {
-        this.normalUserRepository = normalUserRepository;
-        this.guardianRepository = guardianRepository;
-    }
-
-    public Optional<User> findUserByLoginId(String loginId) {
-        Optional<NormalUser> normalUser = normalUserRepository.findByLoginId(loginId);
-        if (normalUser.isPresent()) {
-            return Optional.of(normalUser.get());
-        }
-
-        Optional<Guardians> guardian = guardianRepository.findByLoginId(loginId);
-        return guardian.map(g -> g);
-    }
+//    private final NormalUserRepository normalUserRepository;
+//    private final GuardianRepository guardianRepository;
+//
+//    public UserUtils(NormalUserRepository normalUserRepository, GuardianRepository guardianRepository) {
+//        this.normalUserRepository = normalUserRepository;
+//        this.guardianRepository = guardianRepository;
+//    }
+//
+//    public Optional<User> findUserByLoginId(String loginId) {
+//        Optional<NormalUser> normalUser = normalUserRepository.findByLoginId(loginId);
+//        if (normalUser.isPresent()) {
+//            return Optional.of(normalUser.get());
+//        }
+//
+//        Optional<Guardians> guardian = guardianRepository.findByLoginId(loginId);
+//        return guardian.map(g -> g);
+//    }
 
     public String getUserType(User user) {
         if (user instanceof NormalUser) {

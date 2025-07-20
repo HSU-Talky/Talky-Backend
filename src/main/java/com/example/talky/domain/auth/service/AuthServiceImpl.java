@@ -5,11 +5,10 @@ import com.example.talky.domain.auth.entity.NormalUser;
 import com.example.talky.domain.auth.entity.User;
 import com.example.talky.domain.auth.exception.InvalidPasswordException;
 import com.example.talky.domain.auth.exception.UserNotFoundException;
+import com.example.talky.domain.auth.repository.UserRepository;
 import com.example.talky.global.util.UserUtils;
 import com.example.talky.domain.auth.exception.DuplicateLoginIdException;
 import com.example.talky.domain.auth.exception.InvalidUserTypeException;
-import com.example.talky.domain.auth.repository.GuardianRepository;
-import com.example.talky.domain.auth.repository.NormalUserRepository;
 import com.example.talky.domain.auth.web.dto.LoginReq;
 import com.example.talky.domain.auth.web.dto.LoginRes;
 import com.example.talky.domain.auth.web.dto.SignUpReq;
@@ -25,8 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
-    private final GuardianRepository guardianRepository;
-    private final NormalUserRepository normalUserRepository;
+
+    private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserUtils userUtils;
@@ -36,8 +35,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public SignUpRes signUp(SignUpReq signUpReq) {
         // 아이디 중복 확인
-        if (guardianRepository.existsByLoginId(signUpReq.getLoginId()) || 
-            normalUserRepository.existsByLoginId(signUpReq.getLoginId())) {
+        if (userRepository.existsByLoginId(signUpReq.getLoginId())) {
             throw new DuplicateLoginIdException();
         }
 
@@ -60,7 +58,7 @@ public class AuthServiceImpl implements AuthService {
                 .locationEnabled(false)
                 .build();
         
-        Guardians savedGuardian = guardianRepository.save(guardian);
+        Guardians savedGuardian = userRepository.save(guardian);
         
         return new SignUpRes(
                 savedGuardian.getId(),
@@ -80,7 +78,7 @@ public class AuthServiceImpl implements AuthService {
         String connectionCode = userUtils.generateConnectionCode();
         normalUser.setConnectionCode(connectionCode);
         
-        NormalUser savedUser = normalUserRepository.save(normalUser);
+        NormalUser savedUser = userRepository.save(normalUser);
         
         return new SignUpRes(
                 savedUser.getId(),
@@ -95,7 +93,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional(readOnly = true)
     public LoginRes login(LoginReq loginReq) {
         // 사용자 찾기
-        User user = userUtils.findUserByLoginId(loginReq.getLoginId())
+        User user = userRepository.findByLoginId(loginReq.getLoginId())
                 .orElseThrow(UserNotFoundException::new);
 
         // 비밀번호 검증
@@ -120,7 +118,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void checkIdAvailability(String loginId) {
-        if (userUtils.findUserByLoginId(loginId).isPresent()) {
+        if (userRepository.findByLoginId(loginId).isPresent()) {
             throw new DuplicateLoginIdException();
         }
     }
