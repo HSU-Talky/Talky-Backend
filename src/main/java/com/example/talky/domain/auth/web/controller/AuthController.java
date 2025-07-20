@@ -7,6 +7,7 @@ import com.example.talky.domain.auth.web.dto.SignUpReq;
 import com.example.talky.domain.auth.web.dto.SignUpRes;
 import com.example.talky.global.response.SuccessResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public class AuthController {
     }
 
     @GetMapping("/check")
-    public ResponseEntity<SuccessResponse<?>> checkId(@RequestParam String loginId) {
+    public ResponseEntity<SuccessResponse<?>> checkId(@RequestParam @NotBlank String loginId) {
         authService.checkIdAvailability(loginId);
         return ResponseEntity
                 .status(HttpStatus.OK)
