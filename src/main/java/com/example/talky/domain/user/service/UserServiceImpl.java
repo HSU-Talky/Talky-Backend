@@ -8,8 +8,10 @@ import com.example.talky.domain.auth.exception.UserNotFoundException;
 import com.example.talky.domain.auth.repository.UserRepository;
 import com.example.talky.domain.user.web.dto.GuardianProfileRes;
 import com.example.talky.domain.user.web.dto.NormalUserProfileRes;
+import com.example.talky.domain.user.web.dto.UsernameUpdateReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,4 +34,12 @@ public class UserServiceImpl implements UserService{
         }
 
         throw new InvalidUserTypeException();
-}}
+}
+    @Transactional
+    @Override
+    public void updateUsername(Long userId, UsernameUpdateReq usernameUpdateReq) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+        user.setUsername(usernameUpdateReq.getUsername());
+    }
+}
