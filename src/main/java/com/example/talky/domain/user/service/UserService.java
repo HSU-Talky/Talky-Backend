@@ -1,5 +1,6 @@
 package com.example.talky.domain.user.service;
 
+import com.example.talky.domain.user.web.dto.IntroductionUpdateReq;
 import com.example.talky.domain.user.web.dto.UsernameUpdateReq;
 
 public interface UserService {
@@ -7,5 +8,7 @@ public interface UserService {
     Object getUserProfile(Long userId);
     // 이름 수정
     void updateUsername(Long userId, UsernameUpdateReq usernameUpdateReq);
+    // 자기소개 수정
+    void updateIntroduction(Long userId, IntroductionUpdateReq introductionUpdateReq);
 
 }

@@ -4,9 +4,11 @@ import com.example.talky.domain.auth.entity.Guardians;
 import com.example.talky.domain.auth.entity.NormalUser;
 import com.example.talky.domain.auth.entity.User;
 import com.example.talky.domain.auth.exception.InvalidUserTypeException;
+import com.example.talky.domain.auth.exception.PermissionDeniedException;
 import com.example.talky.domain.auth.exception.UserNotFoundException;
 import com.example.talky.domain.auth.repository.UserRepository;
 import com.example.talky.domain.user.web.dto.GuardianProfileRes;
+import com.example.talky.domain.user.web.dto.IntroductionUpdateReq;
 import com.example.talky.domain.user.web.dto.NormalUserProfileRes;
 import com.example.talky.domain.user.web.dto.UsernameUpdateReq;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+
+    private NormalUser findNormalUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        if(!(user instanceof NormalUser)){
+            throw new PermissionDeniedException();
+        }
+        return (NormalUser) user;
+    }
 
 
     @Override
@@ -41,5 +53,13 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
         user.setUsername(usernameUpdateReq.getUsername());
+    }
+    @Transactional
+    @Override
+    public void updateIntroduction(Long userId, IntroductionUpdateReq introductionUpdateReq) {
+        NormalUser normalUser = findNormalUser(userId);
+        normalUser.setIntroduction(introductionUpdateReq.getIntroduction());
+
+
     }
 }
