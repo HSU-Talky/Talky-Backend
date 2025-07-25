@@ -1,6 +1,7 @@
 package com.example.talky.domain.user.web.controller;
 
 import com.example.talky.domain.user.service.UserService;
+import com.example.talky.domain.user.web.dto.TtsUpdateReq;
 import com.example.talky.domain.user.web.dto.UsernameUpdateReq;
 import com.example.talky.global.response.SuccessResponse;
 import com.example.talky.global.security.CustomUserDetails;
@@ -34,5 +35,13 @@ public class UserController {
         return ResponseEntity
                 .ok(SuccessResponse.empty());
 
+    }
+
+    @PutMapping("/tts")
+    public ResponseEntity<SuccessResponse<?>> updateTts(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                        @RequestBody @Valid TtsUpdateReq ttsUpdateReq) {
+        userService.updateTts(userDetails.getUser().getId(), ttsUpdateReq);
+        return ResponseEntity
+                .ok(SuccessResponse.empty());
     }
 }
