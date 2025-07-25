@@ -1,5 +1,6 @@
 package com.example.talky.domain.user.service;
 
+import com.example.talky.domain.user.web.dto.EmergencyTargetUpdateReq;
 import com.example.talky.domain.user.web.dto.IntroductionUpdateReq;
 import com.example.talky.domain.user.web.dto.UsernameUpdateReq;
 
@@ -10,5 +11,7 @@ public interface UserService {
     void updateUsername(Long userId, UsernameUpdateReq usernameUpdateReq);
     // 자기소개 수정
     void updateIntroduction(Long userId, IntroductionUpdateReq introductionUpdateReq);
+    // 긴급 전화 타겟 수정
+    void updateEmergencyTarget(Long userId, EmergencyTargetUpdateReq emergencyTargetUpdateReq);
 
 }

@@ -7,10 +7,7 @@ import com.example.talky.domain.auth.exception.InvalidUserTypeException;
 import com.example.talky.domain.auth.exception.PermissionDeniedException;
 import com.example.talky.domain.auth.exception.UserNotFoundException;
 import com.example.talky.domain.auth.repository.UserRepository;
-import com.example.talky.domain.user.web.dto.GuardianProfileRes;
-import com.example.talky.domain.user.web.dto.IntroductionUpdateReq;
-import com.example.talky.domain.user.web.dto.NormalUserProfileRes;
-import com.example.talky.domain.user.web.dto.UsernameUpdateReq;
+import com.example.talky.domain.user.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,5 +58,12 @@ public class UserServiceImpl implements UserService{
         normalUser.setIntroduction(introductionUpdateReq.getIntroduction());
 
 
+    }
+
+    @Transactional
+    @Override
+    public void updateEmergencyTarget(Long userId, EmergencyTargetUpdateReq emergencyTargetUpdateReq) {
+        NormalUser normalUser = findNormalUser(userId);
+        normalUser.setEmergencyTarget(emergencyTargetUpdateReq.getEmergencyTarget());
     }
 }
