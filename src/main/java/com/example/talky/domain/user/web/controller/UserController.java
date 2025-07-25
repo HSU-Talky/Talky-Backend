@@ -1,15 +1,15 @@
 package com.example.talky.domain.user.web.controller;
 
 import com.example.talky.domain.user.service.UserService;
+import com.example.talky.domain.user.web.dto.UsernameUpdateReq;
 import com.example.talky.global.response.SuccessResponse;
 import com.example.talky.global.security.CustomUserDetails;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users/me")
@@ -24,5 +24,15 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(SuccessResponse.ok(profile));
+    }
+
+    // 사용자 이름 수정
+    @PutMapping("/username")
+    public ResponseEntity<SuccessResponse<?>> updateUserName(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                             @Valid @RequestBody UsernameUpdateReq usernameUpdateReq) {
+        userService.updateUsername(userDetails.getUser().getId(), usernameUpdateReq);
+        return ResponseEntity
+                .ok(SuccessResponse.empty());
+
     }
 }
