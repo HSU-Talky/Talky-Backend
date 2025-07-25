@@ -66,4 +66,20 @@ public class UserServiceImpl implements UserService{
         NormalUser normalUser = findNormalUser(userId);
         normalUser.setEmergencyTarget(emergencyTargetUpdateReq.getEmergencyTarget());
     }
+    @Transactional
+    @Override
+    public void updateTts(Long userId, TtsUpdateReq ttsUpdateReq) {
+        NormalUser normalUser = findNormalUser(userId);
+        if(ttsUpdateReq.getTtsSpeed() != null){
+            normalUser.setTtsSpeed(ttsUpdateReq.getTtsSpeed());
+        }
+        if(ttsUpdateReq.getTtsLanguage() != null){
+            normalUser.setTtsLanguage(ttsUpdateReq.getTtsLanguage());
+        }
+        if(ttsUpdateReq.getTtsGender() != null){
+            normalUser.setTtsGender(ttsUpdateReq.getTtsGender());
+        }
+    }
+
+
 }

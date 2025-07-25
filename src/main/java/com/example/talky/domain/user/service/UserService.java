@@ -2,6 +2,7 @@ package com.example.talky.domain.user.service;
 
 import com.example.talky.domain.user.web.dto.EmergencyTargetUpdateReq;
 import com.example.talky.domain.user.web.dto.IntroductionUpdateReq;
+import com.example.talky.domain.user.web.dto.TtsUpdateReq;
 import com.example.talky.domain.user.web.dto.UsernameUpdateReq;
 
 public interface UserService {
@@ -13,5 +14,7 @@ public interface UserService {
     void updateIntroduction(Long userId, IntroductionUpdateReq introductionUpdateReq);
     // 긴급 전화 타겟 수정
     void updateEmergencyTarget(Long userId, EmergencyTargetUpdateReq emergencyTargetUpdateReq);
+    // tts 수정
+    void updateTts(Long userId, TtsUpdateReq ttsUpdateReq);
 
 }
