@@ -3,6 +3,7 @@ package com.example.talky.domain.guardian.service;
 import com.example.talky.domain.guardian.web.dto.ConnectUserReq;
 import com.example.talky.domain.guardian.web.dto.ConnectedUserRes;
 import com.example.talky.domain.guardian.web.dto.GuardianProfileRes;
+import com.example.talky.domain.guardian.web.dto.GuardianUsernameUpdateReq;
 import com.example.talky.domain.guardian.web.dto.LocationAlertUpdateReq;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface GuardianService {
 
     // 위치 알림 설정 변경
     void updateLocationAlert(Long guardianId, LocationAlertUpdateReq locationAlertUpdateReq);
+    
+    void updateUsername(Long guardianId, GuardianUsernameUpdateReq guardianUsernameUpdateReq);
 }

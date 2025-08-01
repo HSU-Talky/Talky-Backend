@@ -4,6 +4,7 @@ import com.example.talky.domain.guardian.service.GuardianService;
 import com.example.talky.domain.guardian.web.dto.ConnectUserReq;
 import com.example.talky.domain.guardian.web.dto.ConnectedUserRes;
 import com.example.talky.domain.guardian.web.dto.GuardianProfileRes;
+import com.example.talky.domain.guardian.web.dto.GuardianUsernameUpdateReq;
 import com.example.talky.domain.guardian.web.dto.LocationAlertUpdateReq;
 import com.example.talky.global.response.SuccessResponse;
 import com.example.talky.global.security.CustomUserDetails;
@@ -38,6 +39,13 @@ public class GuardianController {
     public ResponseEntity<SuccessResponse<?>> updateLocationAlert(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                                   @RequestBody @Valid LocationAlertUpdateReq locationAlertUpdateReq) {
         guardianService.updateLocationAlert(userDetails.getUser().getId(), locationAlertUpdateReq);
+        return ResponseEntity.ok(SuccessResponse.empty());
+    }
+
+    @PutMapping("/username")
+    public ResponseEntity<SuccessResponse<?>> updateUsername(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                             @RequestBody @Valid GuardianUsernameUpdateReq guardianUsernameUpdateReq) {
+        guardianService.updateUsername(userDetails.getUser().getId(), guardianUsernameUpdateReq);
         return ResponseEntity.ok(SuccessResponse.empty());
     }
 

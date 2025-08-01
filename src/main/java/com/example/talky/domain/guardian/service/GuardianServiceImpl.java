@@ -9,6 +9,7 @@ import com.example.talky.domain.auth.repository.UserRepository;
 import com.example.talky.domain.guardian.web.dto.ConnectUserReq;
 import com.example.talky.domain.guardian.web.dto.ConnectedUserRes;
 import com.example.talky.domain.guardian.web.dto.GuardianProfileRes;
+import com.example.talky.domain.guardian.web.dto.GuardianUsernameUpdateReq;
 import com.example.talky.domain.guardian.web.dto.LocationAlertUpdateReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -86,5 +87,12 @@ public class GuardianServiceImpl implements GuardianService {
     public void updateLocationAlert(Long guardianId, LocationAlertUpdateReq locationAlertUpdateReq) {
         Guardians guardian = findGuardian(guardianId);
         guardian.setLocationEnabled(locationAlertUpdateReq.getLocationEnabled());
+    }
+
+    @Transactional
+    @Override
+    public void updateUsername(Long guardianId, GuardianUsernameUpdateReq guardianUsernameUpdateReq) {
+        Guardians guardian = findGuardian(guardianId);
+        guardian.setUsername(guardianUsernameUpdateReq.getUsername());
     }
 }
