@@ -1,7 +1,9 @@
 package com.example.talky.global.jwt;
 
 import com.example.talky.domain.auth.entity.User;
-import com.example.talky.global.security.CustomUserDetailsService;
+import com.example.talky.domain.auth.exception.UserNotFoundException;
+import com.example.talky.domain.auth.repository.UserRepository;
+import com.example.talky.global.security.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -11,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -22,6 +23,8 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
+    private final UserRepository userRepository;
+
     @Value("${jwt.secret}")
     private String secretKey;
 
@@ -29,8 +32,6 @@ public class JwtTokenProvider {
     private long expiration; // 밀리초 단위
 
     private Key key;
-
-    private final CustomUserDetailsService customUserDetailsService;
 
     @PostConstruct
     public void init() {
@@ -77,10 +78,10 @@ public class JwtTokenProvider {
         String loginId = claims.getSubject();
 
         // 1. DB에서 유저 조회
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(loginId);
-
+        User user = userRepository.findByLoginId(loginId)
+                .orElseThrow(UserNotFoundException::new);
         // 2. CustomUserDetails 생성
-
+        CustomUserDetails userDetails = new CustomUserDetails(user);
         // 3. 인증 객체 생성 후 반환
         // principal: 사용자 정보 객체
         // credentials: 인증 수단 (보통 비밀번호)

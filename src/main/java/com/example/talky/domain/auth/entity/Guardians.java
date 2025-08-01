@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -17,6 +20,9 @@ public class Guardians extends User {
 
     @Column(name = "location_enabled")
     private Boolean locationEnabled;
+
+    @OneToMany(mappedBy = "guardians")
+    private List<NormalUser> connectedUsers = new ArrayList<>();
 
     @Override
     public String getRole() {
