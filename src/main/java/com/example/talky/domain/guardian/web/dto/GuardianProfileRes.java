@@ -1,4 +1,4 @@
-package com.example.talky.domain.user.web.dto;
+package com.example.talky.domain.guardian.web.dto;
 
 import com.example.talky.domain.auth.entity.Guardians;
 import com.example.talky.domain.auth.entity.NormalUser;
