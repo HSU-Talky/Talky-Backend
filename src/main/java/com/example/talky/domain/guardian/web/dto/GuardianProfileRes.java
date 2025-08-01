@@ -14,14 +14,14 @@ public record GuardianProfileRes(
         List<ConnectedUserInfo> connectedUsers
 ) {
 
-    private record ConnectedUserInfo(Long userId, String username) {
+    private record ConnectedUserInfo(Long userId, String connectionCode) {
         public static ConnectedUserInfo from(NormalUser user) {
-            return new ConnectedUserInfo(user.getId(), user.getUsername());
+            return new ConnectedUserInfo(user.getId(), user.getConnectionCode());
         }
     }
 
     public static GuardianProfileRes from(Guardians user) {
-        // 1. 연결된 사용자 리스트 변환
+        // 1. 연결된 사용자 리스트 변환 (connectionCode 중심)
         List<ConnectedUserInfo> connectedUserInfoList = user.getConnectedUsers().stream()
                 .map(ConnectedUserInfo::from)
                 .collect(Collectors.toList());
@@ -29,10 +29,10 @@ public record GuardianProfileRes(
         // 2. 새로운 GuardianProfileRes 레코드 생성 및 반환
         return new GuardianProfileRes(
                 "guardian",
-                user.getUsername(),
-                user.getLoginId(),
+                user.getUsername(),        // 보호자 이름
+                user.getLoginId(),         // 보호자 아이디
                 user.getLocationEnabled(),
-                connectedUserInfoList // 1번에서 만든 리스트를 전달
+                connectedUserInfoList      // 연결된 사용자들의 connectionCode 목록
         );
     }
 }
