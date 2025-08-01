@@ -1,4 +1,4 @@
-package com.example.talky.domain.practice.domain;
+package com.example.talky.domain.practice.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;

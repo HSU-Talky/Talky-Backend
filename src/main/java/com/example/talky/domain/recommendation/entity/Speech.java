@@ -1,4 +1,4 @@
-package com.example.talky.domain.favorites.entity;
+package com.example.talky.domain.recommendation.entity;
 
 import com.example.talky.domain.auth.entity.NormalUser;
 import com.example.talky.global.entity.BaseEntity;
@@ -11,19 +11,13 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Favorite extends BaseEntity {
-
+public class Speech extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long favoriteId;
+    private Long id;
 
-    private String sentence;
-    private int count;
+    private String where;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "normal_id")
+    @JoinColumn(name = "normal_id", nullable = false)
     private NormalUser normalUser;
-
-    public void increseCount() {
-        this.count++;
-    }
 }

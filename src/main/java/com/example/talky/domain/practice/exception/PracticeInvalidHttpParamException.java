@@ -4,6 +4,6 @@ import com.example.talky.global.exception.BaseException;
 
 public class PracticeInvalidHttpParamException extends BaseException {
     public PracticeInvalidHttpParamException() {
-        super(PracticeErrorCode.PRACTICE_INVALID_HTTP_PARAM);
+        super(PracticeErrorCode.PRACTICE_INVALID_HTTP_PARAM_400);
     }
 }
