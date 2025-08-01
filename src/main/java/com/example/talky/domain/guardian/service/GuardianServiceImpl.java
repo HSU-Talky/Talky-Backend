@@ -7,10 +7,15 @@ import com.example.talky.domain.auth.exception.PermissionDeniedException;
 import com.example.talky.domain.auth.exception.UserNotFoundException;
 import com.example.talky.domain.auth.repository.UserRepository;
 import com.example.talky.domain.guardian.web.dto.ConnectUserReq;
+import com.example.talky.domain.guardian.web.dto.ConnectedUserRes;
+import com.example.talky.domain.guardian.web.dto.GuardianProfileRes;
 import com.example.talky.domain.guardian.web.dto.LocationAlertUpdateReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +31,20 @@ public class GuardianServiceImpl implements GuardianService {
             throw new PermissionDeniedException();
         }
         return (Guardians) user;
+    }
+
+    @Override
+    public GuardianProfileRes getGuardianProfile(Long guardianId) {
+        Guardians guardian = findGuardian(guardianId);
+        return GuardianProfileRes.from(guardian);
+    }
+
+    @Override
+    public List<ConnectedUserRes> getConnectedUsers(Long guardianId) {
+        Guardians guardian = findGuardian(guardianId);
+        return guardian.getConnectedUsers().stream()
+                .map(ConnectedUserRes::from)
+                .collect(Collectors.toList());
     }
 
     @Transactional

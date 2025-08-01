@@ -7,6 +7,7 @@ import com.example.talky.domain.auth.exception.InvalidUserTypeException;
 import com.example.talky.domain.auth.exception.PermissionDeniedException;
 import com.example.talky.domain.auth.exception.UserNotFoundException;
 import com.example.talky.domain.auth.repository.UserRepository;
+import com.example.talky.domain.guardian.web.dto.GuardianProfileRes;
 import com.example.talky.domain.user.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
