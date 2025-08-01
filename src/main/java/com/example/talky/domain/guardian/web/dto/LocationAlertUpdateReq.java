@@ -1,4 +1,4 @@
-package com.example.talky.domain.guardian.web.dto;ㅎ
+package com.example.talky.domain.guardian.web.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
