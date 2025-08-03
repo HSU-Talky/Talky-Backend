@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -68,21 +69,27 @@ public class RcmdServiceImpl implements RcmdService {
          * @Builder 쓰는게 나을듯 싶음.
          */
 
-        if(req.getConversations() == null) {
-            throw new RuntimeException();
+
+        List<String> conversations = new ArrayList<>();
+        if(req.getConversations() != null) {
+            conversations.addFirst(choose);
         }
 
-        List<String> conversations = req.getConversations();
-        conversations.addFirst(choose);
-        // log.info("conversations={}", conversations);
-
-        ToAiReq toAiReq = ToAiReq.builder()
-                .keywords(req.getKeywords())
-                .context(req.getContext())
-                .conversations(req.getConversations())
-                .favorites(favorites)
-                .build();
-
+        ToAiReq toAiReq;
+        if(choose == null || conversations == null) {
+            toAiReq = ToAiReq.builder()
+                    .keywords(req.getKeywords())
+                    .context(req.getContext())
+                    .build();
+        }
+        else {
+            toAiReq = ToAiReq.builder()
+                    .keywords(req.getKeywords())
+                    .context(req.getContext())
+                    .conversations(req.getConversations())
+                    .favorites(favorites)
+                    .build();
+        }
         log.info(toAiReq.toString());
 
         // callAiServer 현재는 null로 구조 일단 짜둠.

@@ -1,13 +1,13 @@
 package com.example.talky.global.ai.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class ToAiReq {
     private List<String> keywords;
