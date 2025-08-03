@@ -11,9 +11,11 @@ import com.example.talky.global.ai.dto.ToAiReq;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -29,6 +31,8 @@ public class RcmdServiceImpl implements RcmdService {
     @Transactional
     @Override
     public ResponseEntity getAiRcmd(GetContextReq req) {
+        // log.info("req.conversations={}", req.getConversations());
+
         // FIXME
         // 현재는 더미값으로 normalId 1번을 저장했음.
         Long normalId = 1L;
@@ -41,7 +45,7 @@ public class RcmdServiceImpl implements RcmdService {
 
         // 현재 클라이언트가 선택한 문장이 즐겨찾기에 있는 문장이라면,
         // 즐겨찾기의 count 값을 1 증가 시킴.
-        if (favoriteIsPresent(normalId, choose)) {
+        if (IsPresent(normalId, choose)) {
             Favorite favorite = favoriteRepository
                     .findByNormalUserIdAndSentence(normalId, choose)
                     .orElseThrow(FavoriteNorFoundException::new);
@@ -65,24 +69,39 @@ public class RcmdServiceImpl implements RcmdService {
          * @Builder 쓰는게 나을듯 싶음.
          */
 
-        List<String> conversations = req.getConversations();
-        conversations.addFirst(choose);
 
-        ToAiReq toAiReq = ToAiReq.builder()
-                .keywords(req.getKeywords())
-                .context(req.getContext())
-                .conversations(req.getConversations())
-                .favorites(favorites)
-                .build();
+        List<String> conversations = new ArrayList<>();
+        if(req.getConversations() != null) {
+            conversations.addFirst(choose);
+        }
+
+        ToAiReq toAiReq;
+        if(choose == null || conversations == null) {
+            toAiReq = ToAiReq.builder()
+                    .keywords(req.getKeywords())
+                    .context(req.getContext())
+                    .build();
+        }
+        else {
+            toAiReq = ToAiReq.builder()
+                    .keywords(req.getKeywords())
+                    .context(req.getContext())
+                    .conversations(req.getConversations())
+                    .favorites(favorites)
+                    .build();
+        }
+        log.info(toAiReq.toString());
 
         // callAiServer 현재는 null로 구조 일단 짜둠.
-        return aiServerClient.callAiServer(toAiReq);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(aiServerClient.callAiServer(toAiReq));
 
         // 반환. 이후에 한번에 new DTO Res 로 리팩토링 해도 될듯.
         // 여기는 문장만 반환해주면 됨
     }
 
-    private boolean favoriteIsPresent(Long normalId, String choose) {
+    private boolean IsPresent(Long normalId, String choose) {
         return favoriteRepository.findByNormalUserIdAndSentence(normalId, choose).isPresent();
     }
 }
