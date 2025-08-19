@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class Speach extends BaseEntity {
+public class Speech extends BaseEntity {
     /**
      * BaseEntity를 상속받음으로써
      * created_at으로 발화가 언제 이루어졌는지 추적 가능

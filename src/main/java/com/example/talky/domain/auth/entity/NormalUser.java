@@ -1,6 +1,6 @@
 package com.example.talky.domain.auth.entity;
 
-import com.example.talky.domain.history.entity.Speach;
+import com.example.talky.domain.history.entity.Speech;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -37,7 +37,7 @@ public class NormalUser extends User{
 
     @JsonBackReference
     @OneToMany(mappedBy = "normalUser")
-    private List<Speach> speach;
+    private List<Speech> speech;
 
     @ManyToOne
     @JoinColumn(name = "guardian_id")
