@@ -55,7 +55,7 @@ public class RcmdServiceImpl implements RcmdService {
             Favorite favorite = favoriteRepository
                     .findByNormalUserIdAndSentence(normalId, choose)
                     .orElseThrow(FavoriteNorFoundException::new);
-            favorite.increseCount();
+            favorite.increaseCount();
             favoriteRepository.save(favorite);
         }
 
