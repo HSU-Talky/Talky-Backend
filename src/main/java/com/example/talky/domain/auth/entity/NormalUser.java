@@ -1,6 +1,6 @@
 package com.example.talky.domain.auth.entity;
 
-import com.example.talky.domain.history.entity.Speech;
+import com.example.talky.domain.recommendation.entity.Speech;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
