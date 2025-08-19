@@ -1,9 +1,14 @@
 package com.example.talky.domain.auth.entity;
 
+import com.example.talky.domain.history.entity.History;
 import com.example.talky.global.entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,6 +36,10 @@ public class NormalUser extends User{
 
     @Column(name = "tts_gender")
     private String ttsGender;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "normalUser")
+    private List<History> history;
 
     @ManyToOne
     @JoinColumn(name = "guardian_id")
