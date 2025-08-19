@@ -15,7 +15,7 @@ public class Speech extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String where;
+    private String place;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "normal_id", nullable = false)
