@@ -1,10 +1,7 @@
 package com.example.talky.domain.user.web.controller;
 
 import com.example.talky.domain.user.service.UserService;
-import com.example.talky.domain.user.web.dto.EmergencyTargetUpdateReq;
-import com.example.talky.domain.user.web.dto.IntroductionUpdateReq;
-import com.example.talky.domain.user.web.dto.TtsUpdateReq;
-import com.example.talky.domain.user.web.dto.UsernameUpdateReq;
+import com.example.talky.domain.user.web.dto.*;
 import com.example.talky.global.response.SuccessResponse;
 import com.example.talky.global.security.CustomUserDetails;
 import jakarta.validation.Valid;
@@ -61,5 +58,12 @@ public class UserController {
         userService.updateEmergencyTarget(userDetails.getUser().getId(), emergencyTargetUpdateReq);
         return ResponseEntity
                 .ok(SuccessResponse.empty());
-                                                                   }
+    }
+
+    @GetMapping("/emergency")
+    public ResponseEntity<SuccessResponse<?>> getEmergencyTarget(
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        GetEmergencyTarget response = userService.getEmergencyTarget(userDetails.getUser().getId());
+        return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(response));
+    }
 }
