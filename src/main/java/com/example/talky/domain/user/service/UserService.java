@@ -1,9 +1,6 @@
 package com.example.talky.domain.user.service;
 
-import com.example.talky.domain.user.web.dto.EmergencyTargetUpdateReq;
-import com.example.talky.domain.user.web.dto.IntroductionUpdateReq;
-import com.example.talky.domain.user.web.dto.TtsUpdateReq;
-import com.example.talky.domain.user.web.dto.UsernameUpdateReq;
+import com.example.talky.domain.user.web.dto.*;
 
 public interface UserService {
     // 프로필 정보 조회(normalUser or guardian)
@@ -16,5 +13,7 @@ public interface UserService {
     void updateEmergencyTarget(Long userId, EmergencyTargetUpdateReq emergencyTargetUpdateReq);
     // tts 수정
     void updateTts(Long userId, TtsUpdateReq ttsUpdateReq);
+    // 긴급호출 조회
+    GetEmergencyTarget getEmergencyTarget(Long userId);
 
 }
