@@ -100,8 +100,6 @@ public class RcmdServiceImpl implements RcmdService {
         SuccessResponse<RecommendationResponse> response = aiServerClient.callAiServer(toAiReq);
         // 카테고리 획득
         String category = response.getData().getCategory();
-        // 장소 획득
-        String place = req.getPlace();
         speechRepository.save(Speech.builder()
                         .normalUser((NormalUser) userRepository.findById(normalId)
                                 .orElseThrow(UserNotFoundException::new))
