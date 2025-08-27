@@ -38,6 +38,17 @@ public class StaticsServiceImpl implements StaticsService {
                 .collect(Collectors.groupingBy(s ->
                         s.getCreatedAt().toLocalDate(), Collectors.counting()));
 
+        // 프론트측에 전달하기 전에 포매팅용 변수 초기화
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d");
+
+        List<StaticsRes.UsedCount> howManyUsedCount = preHowManyUsedCount.entrySet().stream()
+                .map(e ->
+                        new StaticsRes.UsedCount(
+                                e.getKey().format(formatter),
+                                e.getValue()
+                        ))
+                .toList();
+
         // normal_user가 좋아하는 상위 5개의 즐겨찾기 조회
         List<Favorite> top5Favorites = favoriteRepository.findTop5ByNormalUserIdOrderByCountDesc(normalId);
 
@@ -59,9 +70,7 @@ public class StaticsServiceImpl implements StaticsService {
         List<StaticsRes.History> parsedEmergencyHistory = userEmergencyHistories.stream()
                 .filter(s -> s.getCreatedAt().isBefore(lastDay))
                 .map(h -> new StaticsRes.History(
-                        h.getCreatedAt().format(DateTimeFormatter.ofPattern(
-                                "MM/dd"
-                        )),
+                        h.getCreatedAt().format(formatter),
                         h.getCreatedAt().format(DateTimeFormatter.ofPattern(
                                 "hh:mm"
                         )),
