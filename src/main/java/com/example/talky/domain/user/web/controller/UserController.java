@@ -73,6 +73,6 @@ public class UserController {
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         userService.updateIsAcceptedLocationInfo(userDetails.getUser().getId());
-        return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.empty());
+        return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok("변경이 완료되었습니다."));
     }
 }
