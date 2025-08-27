@@ -56,9 +56,9 @@ public class StaticsServiceImpl implements StaticsService {
                 ));
 
         List<EmergencyHistory> userEmergencyHistories = ehRepository.findAllByNormalId(LocalDateTime.now());
-        List<StaticsRes.history> parsedEmergencyHistory = userEmergencyHistories.stream()
+        List<StaticsRes.History> parsedEmergencyHistory = userEmergencyHistories.stream()
                 .filter(s -> s.getCreatedAt().isBefore(lastDay))
-                .map(h -> new StaticsRes.history(
+                .map(h -> new StaticsRes.History(
                         h.getCreatedAt().format(DateTimeFormatter.ofPattern(
                                 "MM/dd"
                         )),
