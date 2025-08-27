@@ -62,6 +62,7 @@ public class UserController {
 
     @GetMapping("/emergency")
     public ResponseEntity<SuccessResponse<?>> getEmergencyTarget(
+            @RequestBody CoordinateReq request,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
         GetEmergencyTarget response = userService.getEmergencyTarget(userDetails.getUser().getId());
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(response));
