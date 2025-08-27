@@ -25,16 +25,24 @@ public class StaticsServiceImpl implements StaticsService {
 
     @Override
     public StaticsRes getNormalUsersStatics(Long normalId) {
-        List<Speech> pickSpeech = speechRepository.findAllByNormalUserId(normalId);
+        // 선택된 normal_user의 PK를 통하여 모든 발화 이력을 조회
+        List<Speech> pickSpeech = speechRepository.findAllByNormalUserId(normalId, LocalDateTime.now().minusDays(7).toLocalDate());
         LocalDateTime lastDay = LocalDateTime.now().minusDays(6).toLocalDate().atStartOfDay();
 
+        // 최근 7일간 사용한 시각을 통한 개수 카운팅
         Map<LocalDate, Long> howManyUsedCount = pickSpeech.stream()
                 .filter(s -> s.getCreatedAt().isBefore(lastDay))
                 .collect(Collectors.groupingBy(s -> s.getCreatedAt().toLocalDate(), Collectors.counting()));
+
+        // normal_user가 좋아하는 상위 5개의 즐겨찾기 조회
         List<Favorite> top5Favorites = favoriteRepository.findTop5ByNormalUserIdOrderByCountDesc(normalId);
+
+        // 사용한 시각과 같은 날짜의 사용 장소를 카운트
         Map<String, Long> usedPlace = pickSpeech.stream()
                 .filter(s -> s.getCreatedAt().toLocalDate().isEqual(LocalDateTime.now().toLocalDate()))
                 .collect(Collectors.groupingBy(Speech::getPlace, Collectors.counting()));
+
+        // 사용한 시각과 같은 날짜의 사용 시간대를 커스텀 함수로 변환
         Map<String, Long> usedWhen = pickSpeech.stream()
                 .filter(s -> s.getCreatedAt().toLocalDate().isEqual(LocalDateTime.now().toLocalDate()))
                 .collect(Collectors.groupingBy(
