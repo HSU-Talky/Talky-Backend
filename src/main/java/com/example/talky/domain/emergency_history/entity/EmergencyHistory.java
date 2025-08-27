@@ -30,6 +30,7 @@ public class EmergencyHistory extends BaseEntity {
 
     @PrePersist
     private void prePersist() {
-        this.target = user.getEmergencyTarget();
+        this.target = user.getEmergencyTarget()
+                .equals("119")? "119" : "보호자";
     }
 }
