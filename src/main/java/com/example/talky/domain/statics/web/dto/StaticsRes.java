@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public record StaticsRes(
-        Map<LocalDate, Long> howManyUsed,
+        List<Map<String, Long>> howManyUsed,
         List<Favorite> top5Used,
         Map<String, Long> usedPlace,
         Map<String, Long> usedWhen,

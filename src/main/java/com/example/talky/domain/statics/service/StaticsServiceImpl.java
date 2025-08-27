@@ -33,9 +33,10 @@ public class StaticsServiceImpl implements StaticsService {
         LocalDateTime lastDay = LocalDateTime.now().minusDays(6).toLocalDate().atStartOfDay();
 
         // 최근 7일간 사용한 시각을 통한 개수 카운팅
-        Map<LocalDate, Long> howManyUsedCount = pickSpeech.stream()
+        Map<LocalDate, Long> preHowManyUsedCount = pickSpeech.stream()
                 .filter(s -> s.getCreatedAt().isBefore(lastDay))
-                .collect(Collectors.groupingBy(s -> s.getCreatedAt().toLocalDate(), Collectors.counting()));
+                .collect(Collectors.groupingBy(s ->
+                        s.getCreatedAt().toLocalDate(), Collectors.counting()));
 
         // normal_user가 좋아하는 상위 5개의 즐겨찾기 조회
         List<Favorite> top5Favorites = favoriteRepository.findTop5ByNormalUserIdOrderByCountDesc(normalId);
