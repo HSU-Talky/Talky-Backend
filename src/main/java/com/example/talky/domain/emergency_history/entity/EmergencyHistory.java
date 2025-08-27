@@ -23,6 +23,8 @@ public class EmergencyHistory extends BaseEntity {
 
     private String target;
 
+    private String roadAddress;
+
     private String longitude;
     private String latitude;
 

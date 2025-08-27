@@ -1,5 +1,6 @@
 package com.example.talky.domain.statics.service;
 
+import com.example.talky.domain.emergency_history.repository.EmergencyHistoryRepository;
 import com.example.talky.domain.favorites.entity.Favorite;
 import com.example.talky.domain.favorites.repository.FavoriteRepository;
 import com.example.talky.domain.recommendation.entity.Speech;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,6 +22,7 @@ public class StaticsServiceImpl implements StaticsService {
 
     private final SpeechRepository speechRepository;
     private final FavoriteRepository favoriteRepository;
+    private final EmergencyHistoryRepository ehRepository;
 
     @Override
     public StaticsRes getNormalUsersStatics(Long normalId) {
@@ -50,6 +51,8 @@ public class StaticsServiceImpl implements StaticsService {
                                 s.getCreatedAt()
                         ), Collectors.counting()
                 ));
+
+        ehRepository.findByNormalId();
         return new StaticsRes(
                 howManyUsedCount,
                 top5Favorites,
