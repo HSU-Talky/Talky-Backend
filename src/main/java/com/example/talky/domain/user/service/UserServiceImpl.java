@@ -7,6 +7,8 @@ import com.example.talky.domain.auth.exception.InvalidUserTypeException;
 import com.example.talky.domain.auth.exception.PermissionDeniedException;
 import com.example.talky.domain.auth.exception.UserNotFoundException;
 import com.example.talky.domain.auth.repository.UserRepository;
+import com.example.talky.domain.emergency_history.entity.EmergencyHistory;
+import com.example.talky.domain.emergency_history.repository.EmergencyHistoryRepository;
 import com.example.talky.domain.guardian.web.dto.GuardianProfileRes;
 import com.example.talky.domain.user.web.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+    private final EmergencyHistoryRepository ehRepository;
 
     private NormalUser findNormalUser(Long userId) {
         User user = userRepository.findById(userId)
@@ -82,11 +85,17 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    @Transactional
     @Override
     public GetEmergencyTarget getEmergencyTarget(Long userId, CoordinateReq request) {
         NormalUser user = findNormalUser(userId);
         if(user.isAcceptedLocationInfo()) {
             // userId와 관계를 갖는 emmergency_history에 저장
+            ehRepository.save(EmergencyHistory.builder()
+                            .user(user)
+                            .longitude(request.getLongitude())
+                            .latitude(request.getLatitude())
+                    .build());
         }
         String telNum = user.getEmergencyTarget();
         return new GetEmergencyTarget(
