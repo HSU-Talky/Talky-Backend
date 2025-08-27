@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public GetEmergencyTarget getEmergencyTarget(Long userId) {
+    public GetEmergencyTarget getEmergencyTarget(Long userId, CoordinateReq request) {
         NormalUser user = findNormalUser(userId);
         String telNum = user.getEmergencyTarget();
         return new GetEmergencyTarget(
