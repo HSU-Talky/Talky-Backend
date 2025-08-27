@@ -67,4 +67,10 @@ public class UserController {
         GetEmergencyTarget response = userService.getEmergencyTarget(userDetails.getUser().getId());
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(response));
     }
+
+    @PutMapping("/locationInfo")
+    public ResponseEntity<SuccessResponse<?>> updateLocationInfo() {
+
+        return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.empty());
+    }
 }
