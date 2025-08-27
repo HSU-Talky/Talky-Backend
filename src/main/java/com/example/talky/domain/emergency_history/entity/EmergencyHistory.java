@@ -1,4 +1,4 @@
-package com.example.talky.domain.emmergency_history.entity;
+package com.example.talky.domain.emergency_history.entity;
 
 import com.example.talky.domain.auth.entity.NormalUser;
 import com.example.talky.global.entity.BaseEntity;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class EmmergencyHistory extends BaseEntity {
+public class EmergencyHistory extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
