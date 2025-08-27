@@ -93,8 +93,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public Void updateIsAcceptedLocationInfo(Long userId) {
+        NormalUser user = findNormalUser(userId);
         return null;
     }
-
-
 }

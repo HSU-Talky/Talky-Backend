@@ -59,4 +59,8 @@ public class NormalUser extends User{
         this.ttsGender = "female";
         this.isAcceptedLocationInfo = false;
     }
+
+    public void toggleIsAcceptedLocationInfo(){
+        this.isAcceptedLocationInfo = !this.isAcceptedLocationInfo;
+    }
 }

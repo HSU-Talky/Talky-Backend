@@ -72,7 +72,7 @@ public class UserController {
     public ResponseEntity<SuccessResponse<?>> updateLocationInfo(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-
+        userService.updateIsAcceptedLocationInfo(userDetails.getUser().getId());
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.empty());
     }
 }
