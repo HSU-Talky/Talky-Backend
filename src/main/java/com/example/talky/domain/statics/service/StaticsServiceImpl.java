@@ -1,5 +1,6 @@
 package com.example.talky.domain.statics.service;
 
+import com.example.talky.domain.emergency_history.entity.EmergencyHistory;
 import com.example.talky.domain.emergency_history.repository.EmergencyHistoryRepository;
 import com.example.talky.domain.favorites.entity.Favorite;
 import com.example.talky.domain.favorites.repository.FavoriteRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -52,12 +54,28 @@ public class StaticsServiceImpl implements StaticsService {
                         ), Collectors.counting()
                 ));
 
-        ehRepository.findByNormalId();
+        List<EmergencyHistory> userEmergencyHistories = ehRepository.findAllByNormalId(LocalDateTime.now());
+        List<StaticsRes.history> parsedEmergencyHistory = userEmergencyHistories.stream()
+                .filter(s -> s.getCreatedAt().isBefore(lastDay))
+                .map(h -> new StaticsRes.history(
+                        h.getCreatedAt().format(DateTimeFormatter.ofPattern(
+                                "MM/dd"
+                        )),
+                        h.getCreatedAt().format(DateTimeFormatter.ofPattern(
+                                "hh:mm"
+                        )),
+                        h.getRoadAddress(),
+                        h.getTarget()
+                ))
+                .toList();
+
+
         return new StaticsRes(
                 howManyUsedCount,
                 top5Favorites,
                 usedPlace,
-                usedWhen
+                usedWhen,
+                parsedEmergencyHistory
         );
     }
 

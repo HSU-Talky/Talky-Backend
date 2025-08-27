@@ -10,6 +10,13 @@ public record StaticsRes(
         Map<LocalDate, Long> howManyUsed,
         List<Favorite> top5Used,
         Map<String, Long> usedPlace,
-        Map<String, Long> usedWhen
+        Map<String, Long> usedWhen,
+        List<history> histories
 ) {
+    public record history (
+            String date,
+            String time,
+            String roadAddress,
+            String target
+    ) {}
 }
