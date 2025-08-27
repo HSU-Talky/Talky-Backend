@@ -1,4 +1,4 @@
-package com.example.talky.domain.statics.web.dto.validate;
+package com.example.talky.domain.user.web.dto.validate;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -16,8 +16,4 @@ public @interface NotAccepted {
     String message() default "위치정보 접근 동의한 사용자에 한해 긴급호출 사용 시 좌표 데이터를 전달하여야 합니다.";
 
     Class<? extends Payload>[] payload() default {};
-
-    String longitude();
-
-    String latitude();
 }
