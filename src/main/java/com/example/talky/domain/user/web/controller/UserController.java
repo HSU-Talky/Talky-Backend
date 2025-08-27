@@ -69,7 +69,9 @@ public class UserController {
     }
 
     @PutMapping("/locationInfo")
-    public ResponseEntity<SuccessResponse<?>> updateLocationInfo() {
+    public ResponseEntity<SuccessResponse<?>> updateLocationInfo(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
 
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.empty());
     }

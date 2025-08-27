@@ -15,5 +15,6 @@ public interface UserService {
     void updateTts(Long userId, TtsUpdateReq ttsUpdateReq);
     // 긴급호출 조회
     GetEmergencyTarget getEmergencyTarget(Long userId);
-
+    // 위치정보 접근 동의 변경
+    Void updateIsAcceptedLocationInfo(Long userId);
 }

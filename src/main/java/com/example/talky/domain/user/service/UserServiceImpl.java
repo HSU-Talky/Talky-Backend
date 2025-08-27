@@ -91,5 +91,10 @@ public class UserServiceImpl implements UserService{
         );
     }
 
+    @Override
+    public Void updateIsAcceptedLocationInfo(Long userId) {
+        return null;
+    }
+
 
 }
