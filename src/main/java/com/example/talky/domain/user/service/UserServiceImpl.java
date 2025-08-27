@@ -85,6 +85,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public GetEmergencyTarget getEmergencyTarget(Long userId, CoordinateReq request) {
         NormalUser user = findNormalUser(userId);
+        if(user.isAcceptedLocationInfo()) {
+            // userId와 관계를 갖는 emmergency_history에 저장
+        }
         String telNum = user.getEmergencyTarget();
         return new GetEmergencyTarget(
                 telNum
