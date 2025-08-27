@@ -43,6 +43,8 @@ public class NormalUser extends User{
     @JoinColumn(name = "guardian_id")
     private Guardians guardians;
 
+    private boolean isAcceptedLocationInfo;
+
     @Override
     public String getRole() {
         return "ROLE_NORMAL";
@@ -55,7 +57,6 @@ public class NormalUser extends User{
         this.ttsSpeed = 50.0;
         this.ttsLanguage = "ko";
         this.ttsGender = "female";
+        this.isAcceptedLocationInfo = false;
     }
-
-
 }
