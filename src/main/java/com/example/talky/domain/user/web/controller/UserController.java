@@ -60,7 +60,7 @@ public class UserController {
                 .ok(SuccessResponse.empty());
     }
 
-    @GetMapping("/emergency")
+    @PostMapping("/emergency")
     public ResponseEntity<SuccessResponse<?>> getEmergencyTarget(
             @RequestBody CoordinateReq request,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
