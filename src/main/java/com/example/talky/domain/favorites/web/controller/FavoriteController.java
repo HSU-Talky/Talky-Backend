@@ -6,10 +6,12 @@ import com.example.talky.domain.favorites.web.dto.CreateFavoriteReq;
 import com.example.talky.domain.favorites.web.dto.CreateFavoriteRes;
 import com.example.talky.domain.favorites.web.dto.DeleteFavoriteReq;
 import com.example.talky.global.response.SuccessResponse;
+import com.example.talky.global.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +24,12 @@ public class FavoriteController {
     private final FavoriteService favoriteService;
 
     @GetMapping
-    public ResponseEntity<SuccessResponse<?>> getAllFavorite() {
-        // 1. JWT 인증 | DTO -> Entity를 서비스계층에 위임
-        // FIXME
+    public ResponseEntity<SuccessResponse<?>> getAllFavorite(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
         AllFavoriteRes res;
         try {
-            res = favoriteService.getAllFavorite(1L);
+            res = favoriteService.getAllFavorite(userDetails.getNormalUser().getId());
         } catch (NullPointerException e) {
             log.info("UserNotFoundException : {}", e.getMessage(), e);
             return ResponseEntity.notFound().build();
@@ -40,12 +42,14 @@ public class FavoriteController {
 
     @PostMapping
     public ResponseEntity<SuccessResponse<?>> createFavorite(
-            @RequestBody @Validated CreateFavoriteReq req) {
+            @RequestBody @Validated CreateFavoriteReq req,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
 
         // 1. JWT 정보와 RequestBody를 서비스계층에 위임
         CreateFavoriteRes res;
         try {
-            res = favoriteService.create(1L, req);
+            res = favoriteService.create(userDetails.getNormalUser().getId(), req);
         } catch (NullPointerException e) {
             /**
              * UserNotFoundException이 없으므로
@@ -65,10 +69,11 @@ public class FavoriteController {
 
     @DeleteMapping
     public ResponseEntity<SuccessResponse<?>> deleteFavorite(
-            @Validated @RequestBody DeleteFavoriteReq req
+            @Validated @RequestBody DeleteFavoriteReq req,
+            @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         // 1. JWT를 통해 User 인증하고, 서비스 계층에 위임
-        favoriteService.delete(1L, req);
+        favoriteService.delete(userDetails.getNormalUser().getId(), req);
         // 2. return ResponseEntity
         return ResponseEntity
                 .status(HttpStatus.OK)
