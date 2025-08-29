@@ -95,6 +95,7 @@ public class UserServiceImpl implements UserService{
                             .user(user)
                             .longitude(request.getLongitude())
                             .latitude(request.getLatitude())
+                            .roadAddress(request.getRoadAddress())
                     .build());
         }
         String telNum = user.getEmergencyTarget();
