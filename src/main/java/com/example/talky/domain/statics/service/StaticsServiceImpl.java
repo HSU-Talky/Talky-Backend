@@ -34,7 +34,7 @@ public class StaticsServiceImpl implements StaticsService {
 
         // 최근 7일간 사용한 시각을 통한 개수 카운팅
         Map<LocalDate, Long> preHowManyUsedCount = pickSpeech.stream()
-                .filter(s -> s.getCreatedAt().isBefore(lastDay))
+                .filter(s -> s.getCreatedAt().isAfter(lastDay))
                 .collect(Collectors.groupingBy(s ->
                         s.getCreatedAt().toLocalDate(), Collectors.counting()));
 
@@ -66,9 +66,11 @@ public class StaticsServiceImpl implements StaticsService {
                         ), Collectors.counting()
                 ));
 
+        // 긴급호출 사용 이력을 조회
+        // 단, 모든 기록을 조회할 시, 쿼리 시간이 길어짐을 생각하여 최근 7일만 조회
         List<EmergencyHistory> userEmergencyHistories = ehRepository.findAllByNormalId(LocalDateTime.now());
         List<StaticsRes.History> parsedEmergencyHistory = userEmergencyHistories.stream()
-                .filter(s -> s.getCreatedAt().isBefore(lastDay))
+                .filter(s -> s.getCreatedAt().isAfter(lastDay))
                 .map(h -> new StaticsRes.History(
                         h.getCreatedAt().format(formatter),
                         h.getCreatedAt().format(DateTimeFormatter.ofPattern(
