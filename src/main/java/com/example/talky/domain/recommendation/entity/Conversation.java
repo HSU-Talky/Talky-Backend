@@ -10,10 +10,11 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
+//@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Conversation extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,4 +31,7 @@ public class Conversation extends BaseEntity {
     @Convert(converter = StringListConverter.class)
     private List<String> conversations; // 이전 대화들
 
+    public void modify(List<String> conversations) {
+        this.conversations = conversations;
+    }
 }
