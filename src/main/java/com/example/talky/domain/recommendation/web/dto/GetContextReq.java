@@ -22,4 +22,5 @@ public class GetContextReq {
     private String choose;
   
     private List<String> conversations;
+    private String sttMessage;
 }

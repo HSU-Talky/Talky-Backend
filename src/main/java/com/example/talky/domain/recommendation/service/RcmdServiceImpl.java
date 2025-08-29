@@ -34,7 +34,6 @@ public class RcmdServiceImpl implements RcmdService {
     private final AiServerClient aiServerClient;
     private final UserRepository userRepository;
     private final FavoriteRepository favoriteRepository;
-    private final UserRepository userRepository;
     private final ConversationRepository conversationRepository; // AI 추적용
     private final SpeechRepository speechRepository; // 별도 API용
 
