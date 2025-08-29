@@ -12,9 +12,11 @@ import com.example.talky.domain.emergency_history.repository.EmergencyHistoryRep
 import com.example.talky.domain.guardian.web.dto.GuardianProfileRes;
 import com.example.talky.domain.user.web.dto.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
@@ -104,10 +106,13 @@ public class UserServiceImpl implements UserService{
         );
     }
 
+    @Transactional
     @Override
     public Void updateIsAcceptedLocationInfo(Long userId) {
         NormalUser user = findNormalUser(userId);
+        log.info("변경전 값={}", user.isAcceptedLocationInfo());
         user.toggleIsAcceptedLocationInfo();
+        log.info("변경후 값={}", user.isAcceptedLocationInfo());
         return null;
     }
 }

@@ -6,11 +6,13 @@ import com.example.talky.global.response.SuccessResponse;
 import com.example.talky.global.security.CustomUserDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/users/me")
 @RequiredArgsConstructor
@@ -72,6 +74,7 @@ public class UserController {
     public ResponseEntity<SuccessResponse<?>> updateLocationInfo(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
+        log.info("위치정보 변경 메서드 진입");
         userService.updateIsAcceptedLocationInfo(userDetails.getUser().getId());
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok("변경이 완료되었습니다."));
     }
