@@ -12,8 +12,8 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 public class GetContextReq {
-    @NotEmpty(message = "장소는 필수 전달값입니다.")
-    private String place;
+//    @NotEmpty(message = "장소는 필수 전달값입니다.")
+//    private String place;
 
     @NotEmpty(message = "키워드는 필수 입력값입니다.")
     private List<String> keywords;
