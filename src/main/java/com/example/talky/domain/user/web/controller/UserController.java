@@ -1,19 +1,18 @@
 package com.example.talky.domain.user.web.controller;
 
 import com.example.talky.domain.user.service.UserService;
-import com.example.talky.domain.user.web.dto.EmergencyTargetUpdateReq;
-import com.example.talky.domain.user.web.dto.IntroductionUpdateReq;
-import com.example.talky.domain.user.web.dto.TtsUpdateReq;
-import com.example.talky.domain.user.web.dto.UsernameUpdateReq;
+import com.example.talky.domain.user.web.dto.*;
 import com.example.talky.global.response.SuccessResponse;
 import com.example.talky.global.security.CustomUserDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/users/me")
 @RequiredArgsConstructor
@@ -61,5 +60,22 @@ public class UserController {
         userService.updateEmergencyTarget(userDetails.getUser().getId(), emergencyTargetUpdateReq);
         return ResponseEntity
                 .ok(SuccessResponse.empty());
-                                                                   }
+    }
+
+    @PostMapping("/emergency")
+    public ResponseEntity<SuccessResponse<?>> getEmergencyTarget(
+            @RequestBody CoordinateReq request,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        GetEmergencyTarget response = userService.getEmergencyTarget(userDetails.getUser().getId(), request);
+        return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(response));
+    }
+
+    @PutMapping("/locationInfo")
+    public ResponseEntity<SuccessResponse<?>> updateLocationInfo(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        log.info("위치정보 변경 메서드 진입");
+        userService.updateIsAcceptedLocationInfo(userDetails.getUser().getId());
+        return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok("변경이 완료되었습니다."));
+    }
 }

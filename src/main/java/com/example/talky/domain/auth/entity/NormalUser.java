@@ -1,9 +1,12 @@
 package com.example.talky.domain.auth.entity;
 
-import com.example.talky.global.entity.BaseEntity;
+import com.example.talky.domain.recommendation.entity.Speech;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -32,9 +35,15 @@ public class NormalUser extends User{
     @Column(name = "tts_gender")
     private String ttsGender;
 
+    @JsonBackReference
+    @OneToMany(mappedBy = "normalUser")
+    private List<Speech> speech;
+
     @ManyToOne
     @JoinColumn(name = "guardian_id")
     private Guardians guardians;
+
+    private boolean isAcceptedLocationInfo;
 
     @Override
     public String getRole() {
@@ -48,7 +57,10 @@ public class NormalUser extends User{
         this.ttsSpeed = 50.0;
         this.ttsLanguage = "ko";
         this.ttsGender = "female";
+        this.isAcceptedLocationInfo = false;
     }
 
-
+    public void toggleIsAcceptedLocationInfo(){
+        this.isAcceptedLocationInfo = !this.isAcceptedLocationInfo;
+    }
 }

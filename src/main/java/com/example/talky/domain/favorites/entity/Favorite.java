@@ -23,7 +23,7 @@ public class Favorite extends BaseEntity {
     @JoinColumn(name = "normal_id")
     private NormalUser normalUser;
 
-    public void increseCount() {
+    public void increaseCount() {
         this.count++;
     }
 }

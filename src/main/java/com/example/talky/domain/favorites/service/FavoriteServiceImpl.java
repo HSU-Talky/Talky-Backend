@@ -51,7 +51,10 @@ public class FavoriteServiceImpl implements FavoriteService {
 
         Favorite res = favoriteRepository.save(favorite);
 
-        return new CreateFavoriteRes(res.getFavoriteId());
+        return new CreateFavoriteRes(
+                res.getFavoriteId(),
+                res.getSentence()
+        );
     }
 
     // 해당 유저의 모든 즐겨찾기 조회

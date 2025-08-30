@@ -7,6 +7,7 @@ import com.example.talky.global.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,12 +26,12 @@ public class RcmdController {
     @PostMapping("/context")
     public ResponseEntity<SuccessResponse<?>> getAiSentence(
             @Validated @RequestBody GetContextReq req,
-            @AuthenticationPrincipal CustomUserDetails user) {
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
         log.info(req.toString());
-        log.info("id={}", user.getUser().getId());
-        Long normalId = user.getUser().getId();
+        Long normalId = userDetails.getNormalUser().getId();
         // TODO
         // 서비스 계층 호출
         return rcmdService.getAiRcmd(req, normalId);
     }
+
 }
