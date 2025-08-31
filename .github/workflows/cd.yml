@@ -2,15 +2,16 @@ name: CD
 
 on:
   workflow_run:
-    workflows: ["CI with Gradle"] # CI 워크플로 이름과 정확히 일치해야 함
-    types: [completed] # CI가 끝났을 때 트리거
-    branches: [main] # 특정 브랜치에서만
+    workflows: ["CI with Gradle"]
+    types: [completed]
+    branches: [main]
 
 permissions:
   contents: read
 
 env:
-  IMAGE: ${{ secrets.DOCKER_USERNAME }}/talky
+  IMAGE: ${{ secrets.DOCKER_USERNAME }}/talky-backend
+  COMPOSE_FILE: docker-compose.yml
 
 jobs:
   deploy:
@@ -20,27 +21,33 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # SSH로 서버에 접속해 배포
-      - name: Deploy over SSH
-        uses: appleboy/ssh-action@v1.2.0
+      - name: Copy docker-compose.yml to server
+        uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          port: 22
-          script: |
-            echo "${{ secrets.ENV_FILE }}" > /home/${{ secrets.SERVER_USER }}/.env
-            echo "[1/3] Pull latest Docker image..."
-            docker pull ${{ env.IMAGE }}:latest
+          source: "${{ env.COMPOSE_FILE }}"
+          target: "/home/${{ secrets.SERVER_USER }}/"
 
-            echo "[2/3] Restart container with new image..."
-            docker stop talky || true
-            docker rm talky || true
-            docker run -d --name talky \
-              --env-file /home/${{ secrets.SERVER_USER }}/.env \
-              -p 8080:8080 \
-              ${{ env.IMAGE }}:latest
-            
+      - name: Deploy with Docker Compose
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /home/${{ secrets.SERVER_USER }}/
+
+            # .env 파일 생성 및 DOCKER_USERNAME 추가
+            echo "${{ secrets.ENV_FILE }}" > .env
+            echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> .env
+
+            echo "[1/3] Pull latest Docker image for Spring service..."
+            docker-compose -f ${{ env.COMPOSE_FILE }} pull spring
+
+            echo "[2/3] Restart Spring service with new image..."
+            docker-compose -f ${{ env.COMPOSE_FILE }} up -d --no-deps --force-recreate spring
             
             echo "[3/3] Cleanup unused images..."
             docker image prune -f

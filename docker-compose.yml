@@ -2,7 +2,7 @@ version: '3.8'
 services:
 
   fastapi:
-    image: talky:latest
+    image: ${DOCKER_USERNAME}/talky-ai:latest
     container_name: fastapi
     ports:
       - "8000:8000"
@@ -13,14 +13,13 @@ services:
       - talky-network
 
   spring:
-    image: talky:latest
+    image: ${DOCKER_USERNAME}/talky-backend:latest
     container_name: spring
     ports:
       - "8080:8080"
     environment:
       - TZ=Asia/Seoul
       - AI_SERVER_URL=http://fastapi:8000
-      - SPRING_PROFILES_ACTIVE=docker
     restart: always
     networks:
       - talky-network
