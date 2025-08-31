@@ -21,7 +21,8 @@ import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
-public class JwtTokenProvider {
+public class
+JwtTokenProvider {
 
     private final UserRepository userRepository;
 

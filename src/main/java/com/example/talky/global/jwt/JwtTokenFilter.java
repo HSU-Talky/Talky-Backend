@@ -26,7 +26,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             FilterChain filterChain)throws ServletException, IOException {
 
         // 1. extractToken : Authorization 헤더에서 JWT 토큰 추출
-        String token = extrackToken(request);
+        String token = extractToken(request);
 
         // 2. validateToken : 토큰 유효성 검사
         if (token != null && jwtTokenProvider.validateToken(token)) {
@@ -41,7 +41,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     }
 
     // Authentication 헤더에서 "Bearer" 토큰 추출
-    private String extrackToken(HttpServletRequest request) {
+    private String extractToken(HttpServletRequest request) {
         String bearer = request.getHeader("Authorization");
         if (bearer != null && bearer.startsWith("Bearer ")) {
             return bearer.substring(7);
