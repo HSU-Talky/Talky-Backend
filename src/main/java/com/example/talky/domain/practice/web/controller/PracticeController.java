@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.InvalidParameterException;
@@ -25,7 +26,7 @@ public class PracticeController {
     private final PracticeService practiceService;
 
     @GetMapping
-    public ResponseEntity<SuccessResponse<?>> getPractice(Long pracId) {
+    public ResponseEntity<SuccessResponse<?>> getPractice(@RequestParam Long pracId) {
         if(pracId <=0 || pracId >= 8) {
             log.info("요청 파라미터의 값이 잘못되었습니다. prac_id = {}, ", pracId);
             throw new PracticeInvalidHttpParamException();
