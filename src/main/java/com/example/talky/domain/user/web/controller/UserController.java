@@ -54,7 +54,7 @@ public class UserController {
                 .ok(SuccessResponse.empty());
     }
 
-    @PutMapping("/emergecyTarget")
+    @PutMapping("/emergencyTarget")
     public ResponseEntity<SuccessResponse<?>> updateEmergecyTarget(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                                    @RequestBody EmergencyTargetUpdateReq emergencyTargetUpdateReq) {
         userService.updateEmergencyTarget(userDetails.getUser().getId(), emergencyTargetUpdateReq);
