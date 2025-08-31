@@ -1,0 +1,82 @@
+package com.example.talky.domain.favorites.web.controller;
+
+import com.example.talky.domain.favorites.service.FavoriteService;
+import com.example.talky.domain.favorites.web.dto.AllFavoriteRes;
+import com.example.talky.domain.favorites.web.dto.CreateFavoriteReq;
+import com.example.talky.domain.favorites.web.dto.CreateFavoriteRes;
+import com.example.talky.domain.favorites.web.dto.DeleteFavoriteReq;
+import com.example.talky.global.response.SuccessResponse;
+import com.example.talky.global.security.CustomUserDetails;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+@Slf4j
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/favorite")
+public class FavoriteController {
+
+    private final FavoriteService favoriteService;
+
+    @GetMapping
+    public ResponseEntity<SuccessResponse<?>> getAllFavorite(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        AllFavoriteRes res;
+        try {
+            res = favoriteService.getAllFavorite(userDetails.getNormalUser().getId());
+        } catch (NullPointerException e) {
+            log.info("UserNotFoundException : {}", e.getMessage(), e);
+            return ResponseEntity.notFound().build();
+        }
+        // 2. return ResponseEntity
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(SuccessResponse.ok(res));
+    }
+
+    @PostMapping
+    public ResponseEntity<SuccessResponse<?>> createFavorite(
+            @RequestBody @Validated CreateFavoriteReq req,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+
+        // 1. JWT 정보와 RequestBody를 서비스계층에 위임
+        CreateFavoriteRes res;
+        try {
+            res = favoriteService.create(userDetails.getNormalUser().getId(), req);
+        } catch (NullPointerException e) {
+            /**
+             * UserNotFoundException이 없으므로
+             * 서비스계층에서 normal_user = null일 시,
+             * RuntimeError를 컨트롤러로 던짐. 여기서 catch
+             * FIXME
+             */
+            log.info("UserNotFoundException : {}", e.getMessage(), e);
+            return ResponseEntity.notFound().build();
+        }
+
+        // 2. return ResponseEntity
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(SuccessResponse.created(res));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<SuccessResponse<?>> deleteFavorite(
+            @Validated @RequestBody DeleteFavoriteReq req,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        // 1. JWT를 통해 User 인증하고, 서비스 계층에 위임
+        favoriteService.delete(userDetails.getNormalUser().getId(), req);
+        // 2. return ResponseEntity
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(SuccessResponse.empty());
+    }
+}

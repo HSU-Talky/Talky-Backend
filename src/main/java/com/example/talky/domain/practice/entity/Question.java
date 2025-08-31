@@ -1,0 +1,30 @@
+package com.example.talky.domain.practice.entity;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Question {
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private Long pracId;
+
+    private String sentence;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "question")
+    private List<Answer> answers = new ArrayList<>();
+}
