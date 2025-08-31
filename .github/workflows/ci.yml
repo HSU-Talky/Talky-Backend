@@ -17,7 +17,7 @@ permissions:
 
 env:
   JAVA_VERSION: '21'
-  IMAGE: ${{ secrets.DOCKER_USERNAME }}/talky  
+  IMAGE: ${{ secrets.DOCKER_USERNAME }}/talky-backend
 
 jobs:
   build:
