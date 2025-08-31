@@ -44,10 +44,10 @@ jobs:
             echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> .env
 
             echo "[1/3] Pull latest Docker image for Spring service..."
-            docker-compose -f ${{ env.COMPOSE_FILE }} pull spring
+            docker compose -f ${{ env.COMPOSE_FILE }} pull spring
 
             echo "[2/3] Restart Spring service with new image..."
-            docker-compose -f ${{ env.COMPOSE_FILE }} up -d --no-deps --force-recreate spring
+            docker compose -f ${{ env.COMPOSE_FILE }} up -d --no-deps --force-recreate spring
             
             echo "[3/3] Cleanup unused images..."
             docker image prune -f
