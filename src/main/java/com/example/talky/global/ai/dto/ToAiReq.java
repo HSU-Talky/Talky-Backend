@@ -14,4 +14,5 @@ public class ToAiReq {
     private String context;
     private List<String> conversations;
     private List<String> favorites;
+    private String sttMessage;
 }
