@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers("/recommendations/**").hasRole("NORMAL")
                         .requestMatchers("/users/me/**").hasAnyRole("NORMAL", "GUARDIAN")
                         .requestMatchers("/guardians/me/**").hasRole("GUARDIAN")
+                        .requestMatchers("/stt").hasRole("NORMAL")
                         .anyRequest().authenticated())
                         .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 ;
