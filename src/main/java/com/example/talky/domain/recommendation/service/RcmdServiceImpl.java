@@ -44,7 +44,7 @@ public class RcmdServiceImpl implements RcmdService {
 
         // choose == null -> drop all record(새로운 user 대화 이력 테이블 사용)
         if(choose == null) {
-            log.info("나 삭제될게?");
+            //log.info("나 삭제될게?");
             conversationRepository.deleteAllByNormalUser_Id(normalId);
         }
 
