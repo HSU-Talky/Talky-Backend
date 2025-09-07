@@ -1,4 +1,4 @@
-package com.example.talky.adapter.ai.dto;
+package com.example.talky.global.ai.dto;
 
 import lombok.Getter;
 
