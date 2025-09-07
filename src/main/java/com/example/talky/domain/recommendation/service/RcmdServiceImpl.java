@@ -115,6 +115,7 @@ public class RcmdServiceImpl implements RcmdService {
                     .context(req.getContext())
                     .conversations(conversations)
                     .favorites(favorites)
+                    .sttMessage(req.getSttMessage())
                     .build();
         }
         log.info(toAiReq.toString());
