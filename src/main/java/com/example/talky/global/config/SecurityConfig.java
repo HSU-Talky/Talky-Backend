@@ -5,6 +5,7 @@ import com.example.talky.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -37,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers("/recommendations/**").hasRole("NORMAL")
                         .requestMatchers("/users/me/**").hasAnyRole("NORMAL", "GUARDIAN")
                         .requestMatchers("/guardians/me/**").hasRole("GUARDIAN")
+                        .requestMatchers("/stt").hasRole("NORMAL")
                         .anyRequest().authenticated())
                         .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 ;

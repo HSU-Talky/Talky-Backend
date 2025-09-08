@@ -2,10 +2,12 @@ package com.example.talky.domain.recommendation.web.controller;
 
 import com.example.talky.domain.recommendation.service.RcmdService;
 import com.example.talky.domain.recommendation.web.dto.GetContextReq;
+import com.example.talky.global.ai.dto.AiRcmdRes;
 import com.example.talky.global.response.SuccessResponse;
 import com.example.talky.global.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,9 +31,10 @@ public class RcmdController {
             @AuthenticationPrincipal CustomUserDetails userDetails) {
         log.info(req.toString());
         Long normalId = userDetails.getNormalUser().getId();
-        // TODO
+
         // 서비스 계층 호출
-        return rcmdService.getAiRcmd(req, normalId);
+        AiRcmdRes response = rcmdService.getAiRcmd(req, normalId);
+        return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(response));
     }
 
 }

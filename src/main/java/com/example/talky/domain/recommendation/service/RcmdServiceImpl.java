@@ -13,6 +13,7 @@ import com.example.talky.domain.recommendation.entity.Conversation;
 import com.example.talky.domain.recommendation.repository.ConversationRepository;
 import com.example.talky.domain.recommendation.repository.SpeechRepository;
 import com.example.talky.domain.recommendation.web.dto.GetContextReq;
+import com.example.talky.global.ai.dto.AiRcmdRes;
 import com.example.talky.global.ai.dto.ToAiReq;
 import com.example.talky.global.response.SuccessResponse;
 import jakarta.transaction.Transactional;
@@ -39,12 +40,12 @@ public class RcmdServiceImpl implements RcmdService {
 
     @Transactional
     @Override
-    public ResponseEntity getAiRcmd(GetContextReq req, Long normalId) {
+    public AiRcmdRes getAiRcmd(GetContextReq req, Long normalId) {
         String choose = req.getChoose();
 
         // choose == null -> drop all record(새로운 user 대화 이력 테이블 사용)
         if(choose == null) {
-            log.info("나 삭제될게?");
+            //log.info("나 삭제될게?");
             conversationRepository.deleteAllByNormalUser_Id(normalId);
         }
 
@@ -102,37 +103,33 @@ public class RcmdServiceImpl implements RcmdService {
         ToAiReq toAiReq;
         log.info("choose={}, conversations={}", choose, conversations);
         if(choose == null && conversations == null) {
-            log.info("잘못 들어옴");
+            //log.info("잘못 들어옴");
             toAiReq = ToAiReq.builder()
                     .keywords(req.getKeywords())
                     .context(req.getContext())
                     .build();
         }
         else {
-            log.info("잘 들어왓음");
+            //log.info("잘 들어왓음");
             toAiReq = ToAiReq.builder()
                     .keywords(req.getKeywords())
                     .context(req.getContext())
                     .conversations(conversations)
                     .favorites(favorites)
+                    .sttMessage(req.getSttMessage())
                     .build();
         }
         log.info(toAiReq.toString());
-        SuccessResponse<RecommendationResponse> response = aiServerClient.callAiServer(toAiReq);
+        AiRcmdRes response = aiServerClient.getAiRcmdSentences(toAiReq);
         // 카테고리 획득
-        String category = response.getData().getCategory();
+        String category = response.getCategory();
         speechRepository.save(Speech.builder()
                         .normalUser((NormalUser) userRepository.findById(normalId)
                                 .orElseThrow(UserNotFoundException::new))
                         .place(category)
                         .build());
-        // callAiServer 현재는 null로 구조 일단 짜둠.
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
 
-        // 반환. 이후에 한번에 new DTO Res 로 리팩토링 해도 될듯.
-        // 여기는 문장만 반환해주면 됨
+        return response;
     }
 
     private boolean favoriteIsPresent(Long normalId, String choose) {
