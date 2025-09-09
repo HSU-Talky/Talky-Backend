@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class RcmdController {
 
     private final RcmdService rcmdService;
-    private final ObjectMapper objectMapper;
 
     @PostMapping("/context")
     public ResponseEntity<SuccessResponse<?>> getAiSentence(
