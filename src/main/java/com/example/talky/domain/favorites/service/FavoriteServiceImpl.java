@@ -86,13 +86,9 @@ public class FavoriteServiceImpl implements FavoriteService {
     public void delete(Long normalId, DeleteFavoriteReq req) {
         String sentence = req.getSentence();
 
-        /**
-         * FIXME
-         * NullPointerException -> UserNotFoundException
-         */
         NormalUser user = (NormalUser) userRepository.findById(normalId)
                 .orElseThrow(NullPointerException::new);
-        Favorite favorite = favoriteRepository.findById(normalId)
+        Favorite favorite = favoriteRepository.findByNormalUserIdAndSentence(normalId, sentence)
                 .orElseThrow(FavoriteNorFoundException::new);
 
         favoriteRepository.delete(favorite);
