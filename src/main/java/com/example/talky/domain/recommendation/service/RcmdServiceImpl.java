@@ -1,6 +1,6 @@
 package com.example.talky.domain.recommendation.service;
 
-import com.example.talky.adapter.ai.AiServerClient;
+import com.example.talky.global.ai.FastApiClient;
 import com.example.talky.domain.auth.entity.NormalUser;
 import com.example.talky.domain.auth.exception.UserNotFoundException;
 import com.example.talky.domain.auth.repository.UserRepository;
@@ -31,7 +31,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RcmdServiceImpl implements RcmdService {
 
-    private final AiServerClient aiServerClient;
+    private final FastApiClient fastApiClient;
     private final UserRepository userRepository;
     private final FavoriteRepository favoriteRepository;
     private final ConversationRepository conversationRepository; // AI 추적용
@@ -109,7 +109,7 @@ public class RcmdServiceImpl implements RcmdService {
                 .build();
 
         // AI 서버 호출
-        AiRcmdRes response = aiServerClient.getAiRecommendation(toAiReq, file);
+        AiRcmdRes response = fastApiClient.getAiRecommendation(toAiReq, file);
         String category = response.getCategory();
         String sttResultFromAi = response.getSttMessage(); // AI 서버로부터 STT 결과 수신
 
