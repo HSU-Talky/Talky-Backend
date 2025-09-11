@@ -1,26 +1,15 @@
 package com.example.talky.domain.recommendation.web.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Getter
-@ToString
-@AllArgsConstructor
+@NoArgsConstructor
 public class GetContextReq {
-//    @NotEmpty(message = "장소는 필수 전달값입니다.")
-//    private String place;
-
-    @NotEmpty(message = "키워드는 필수 입력값입니다.")
     private List<String> keywords;
-
     private String context;
     private String choose;
-  
-    private List<String> conversations;
-    private String sttMessage;
+    private String sttMessage; // 사용자가 음성으로 입력한 mp3 파일을 서버에서 텍스트로 변환(STT)한 결과값. 추천 문장 생성에 활용됨.
 }
