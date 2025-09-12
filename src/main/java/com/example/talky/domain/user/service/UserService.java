@@ -13,6 +13,8 @@ public interface UserService {
     void updateEmergencyTarget(Long userId, EmergencyTargetUpdateReq emergencyTargetUpdateReq);
     // tts 수정
     void updateTts(Long userId, TtsUpdateReq ttsUpdateReq);
+    // 보호자 정보 등록 및  수정
+    void updateGuardianInfo(Long userId, GuardianInfoUpdateReq guardianInfoUpdateReq);
     // 긴급호출 조회
     GetEmergencyTarget getEmergencyTarget(Long userId, CoordinateReq request);
     // 위치정보 접근 동의 변경

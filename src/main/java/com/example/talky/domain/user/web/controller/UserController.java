@@ -78,4 +78,12 @@ public class UserController {
         userService.updateIsAcceptedLocationInfo(userDetails.getUser().getId());
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok("변경이 완료되었습니다."));
     }
+
+    @PutMapping("/guardianInfo")
+    public ResponseEntity<SuccessResponse<?>> updateGuardianInfo(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                @RequestBody @Valid GuardianInfoUpdateReq guardianInfoUpdateReq) {
+        userService.updateGuardianInfo(userDetails.getUser().getId(), guardianInfoUpdateReq);
+        return ResponseEntity
+                .ok(SuccessResponse.empty());
+    }
 }
