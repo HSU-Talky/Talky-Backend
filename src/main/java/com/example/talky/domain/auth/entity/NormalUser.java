@@ -43,6 +43,12 @@ public class NormalUser extends User{
     @JoinColumn(name = "guardian_id")
     private Guardians guardians;
 
+    @Column(name = "guardian_name")
+    private String guardianName;
+
+    @Column(name = "guardian_phone")
+    private String guardianPhone;
+
     private boolean isAcceptedLocationInfo;
 
     @Override
