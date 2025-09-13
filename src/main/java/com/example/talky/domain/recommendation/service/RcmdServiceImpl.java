@@ -71,7 +71,7 @@ public class RcmdServiceImpl implements RcmdService {
                 conversation.getConversations()
         ).orElse(new ArrayList<>());
 
-        if(req.getChoose() != null && req.getSttMessage() != null) {
+        if(req.getChoose() != null) {
             tracking.addFirst(req.getChoose());
         }
 
@@ -98,7 +98,7 @@ public class RcmdServiceImpl implements RcmdService {
                 .toList();
 
         // AI 서버로 보낼 요청 객체 (ToAiReq) 생성
-        // sttMessage는 현재 턴에서는 AI 서버가 파일로부터 생성하므로 null로 설정
+        // sttMessage는 AI 서버가 파일로부터 생성하므로 null로 설정
         ToAiReq toAiReq = ToAiReq.builder()
                 .keywords(req.getKeywords())
                 .context(req.getContext())
