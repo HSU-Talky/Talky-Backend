@@ -60,7 +60,7 @@ public class NormalUser extends User{
     @PrePersist
     public void setDefault(){
         this.emergencyTarget = "119";
-        this.ttsSpeed = 50.0;
+        this.ttsSpeed = 1.0;
         this.ttsLanguage = "ko";
         this.ttsGender = "female";
         this.isAcceptedLocationInfo = false;
