@@ -29,7 +29,7 @@ public class StaticsServiceImpl implements StaticsService {
     @Override
     public StaticsRes getNormalUsersStatics(Long normalId) {
         // 선택된 normal_user의 PK를 통하여 모든 발화 이력을 조회
-        List<Speech> pickSpeech = speechRepository.findAllByNormalUserId(normalId, LocalDateTime.now().minusDays(7).toLocalDate());
+        List<Speech> pickSpeech = speechRepository.findAllByNormalUserId(normalId, LocalDateTime.now().minusDays(7).toLocalDate().atStartOfDay());
         LocalDateTime lastDay = LocalDateTime.now().minusDays(6).toLocalDate().atStartOfDay();
 
         // 최근 7일간 사용한 시각을 통한 개수 카운팅
@@ -50,7 +50,14 @@ public class StaticsServiceImpl implements StaticsService {
                 .toList();
 
         // normal_user가 좋아하는 상위 5개의 즐겨찾기 조회
-        List<Favorite> top5Favorites = favoriteRepository.findTop5ByNormalUserIdOrderByCountDesc(normalId);
+        List<StaticsRes.Favorites> top5Favorites = favoriteRepository.findTop5ByNormalUserIdOrderByCountDesc(normalId)
+                .stream()
+                .map(f -> new StaticsRes.Favorites(
+                        f.getFavoriteId(),
+                        f.getSentence(),
+                        f.getCount()
+                ))
+                .toList();
 
         // 사용한 시각과 같은 날짜의 사용 장소를 카운트
         Map<String, Long> usedPlace = pickSpeech.stream()
@@ -68,7 +75,7 @@ public class StaticsServiceImpl implements StaticsService {
 
         // 긴급호출 사용 이력을 조회
         // 단, 모든 기록을 조회할 시, 쿼리 시간이 길어짐을 생각하여 최근 7일만 조회
-        List<EmergencyHistory> userEmergencyHistories = ehRepository.findAllByNormalId(LocalDateTime.now());
+        List<EmergencyHistory> userEmergencyHistories = ehRepository.findAllByNormalId(normalId, LocalDateTime.now());
         List<StaticsRes.History> parsedEmergencyHistory = userEmergencyHistories.stream()
                 .filter(s -> s.getCreatedAt().isAfter(lastDay))
                 .map(h -> new StaticsRes.History(
