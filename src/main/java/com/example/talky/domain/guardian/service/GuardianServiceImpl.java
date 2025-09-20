@@ -6,6 +6,9 @@ import com.example.talky.domain.auth.entity.User;
 import com.example.talky.domain.auth.exception.PermissionDeniedException;
 import com.example.talky.domain.auth.exception.UserNotFoundException;
 import com.example.talky.domain.auth.repository.UserRepository;
+import com.example.talky.domain.guardian.exception.AlreadyConnectedException;
+import com.example.talky.domain.guardian.exception.InvalidConnectionCodeException;
+import com.example.talky.domain.guardian.exception.NotConnectedUserException;
 import com.example.talky.domain.guardian.web.dto.ConnectUserReq;
 import com.example.talky.domain.guardian.web.dto.ConnectedUserRes;
 import com.example.talky.domain.guardian.web.dto.GuardianProfileRes;
@@ -57,7 +60,12 @@ public class GuardianServiceImpl implements GuardianService {
         NormalUser normalUser = userRepository.findByConnectionCode(connectUserReq.getConnectionCode())
                 .filter(user -> user instanceof NormalUser)
                 .map(user -> (NormalUser) user)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(InvalidConnectionCodeException::new);
+        
+        // 이미 연결된 사용자인지 확인
+        if (normalUser.getGuardians() != null) {
+            throw new AlreadyConnectedException();
+        }
         
         // 연결 설정
         normalUser.setGuardians(guardian);
@@ -73,9 +81,14 @@ public class GuardianServiceImpl implements GuardianService {
                 .map(user -> (NormalUser) user)
                 .orElseThrow(UserNotFoundException::new);
         
+        // 연결되지 않은 사용자인지 확인
+        if (normalUser.getGuardians() == null) {
+            throw new NotConnectedUserException();
+        }
+        
         // 해당 Guardian과 연결된 사용자인지 확인
         if (!normalUser.getGuardians().equals(guardian)) {
-            throw new PermissionDeniedException();
+            throw new NotConnectedUserException();
         }
         
         // 연결 해제

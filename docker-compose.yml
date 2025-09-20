@@ -38,8 +38,8 @@ services:
       - TZ=Asia/Seoul
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
-      - /etc/letsencrypt/live/api.13th.shop/fullchain.pem:/etc/nginx/certs/fullchain.pem
-      - /etc/letsencrypt/live/api.13th.shop/privkey.pem:/etc/nginx/certs/privkey.pem
+      - /etc/letsencrypt/live/43.200.236.115.nip.io/fullchain.pem:/etc/nginx/certs/fullchain.pem
+      - /etc/letsencrypt/live/43.200.236.115.nip.io/privkey.pem:/etc/nginx/certs/privkey.pem
     restart: always
     networks:
       - talky-network
