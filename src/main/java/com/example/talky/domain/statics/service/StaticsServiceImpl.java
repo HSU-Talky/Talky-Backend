@@ -64,6 +64,13 @@ public class StaticsServiceImpl implements StaticsService {
                 .filter(s -> s.getCreatedAt().toLocalDate().isEqual(LocalDateTime.now().toLocalDate()))
                 .collect(Collectors.groupingBy(Speech::getPlace, Collectors.counting()));
 
+        List<StaticsRes.Places> places = usedPlace.entrySet().stream()
+                .map(p -> new StaticsRes.Places(
+                        p.getKey(),
+                        p.getValue()
+                ))
+                .toList();
+
         // 사용한 시각과 같은 날짜의 사용 시간대를 커스텀 함수로 변환
         Map<String, Long> usedWhen = pickSpeech.stream()
                 .filter(s -> s.getCreatedAt().toLocalDate().isEqual(LocalDateTime.now().toLocalDate()))
@@ -72,6 +79,13 @@ public class StaticsServiceImpl implements StaticsService {
                                 s.getCreatedAt()
                         ), Collectors.counting()
                 ));
+
+        List<StaticsRes.Times> times = usedWhen.entrySet().stream()
+                .map(t -> new StaticsRes.Times(
+                        t.getKey(),
+                        t.getValue()
+                ))
+                .toList();
 
         // 긴급호출 사용 이력을 조회
         // 단, 모든 기록을 조회할 시, 쿼리 시간이 길어짐을 생각하여 최근 7일만 조회
@@ -92,8 +106,8 @@ public class StaticsServiceImpl implements StaticsService {
         return new StaticsRes(
                 howManyUsedCount,
                 top5Favorites,
-                usedPlace,
-                usedWhen,
+                places,
+                times,
                 parsedEmergencyHistory
         );
     }
