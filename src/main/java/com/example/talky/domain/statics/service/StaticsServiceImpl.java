@@ -80,6 +80,13 @@ public class StaticsServiceImpl implements StaticsService {
                         ), Collectors.counting()
                 ));
 
+        List<StaticsRes.Times> times = usedWhen.entrySet().stream()
+                .map(t -> new StaticsRes.Times(
+                        t.getKey(),
+                        t.getValue()
+                ))
+                .toList();
+
         // 긴급호출 사용 이력을 조회
         // 단, 모든 기록을 조회할 시, 쿼리 시간이 길어짐을 생각하여 최근 7일만 조회
         List<EmergencyHistory> userEmergencyHistories = ehRepository.findAllByNormalId(normalId, LocalDateTime.now());
@@ -99,8 +106,8 @@ public class StaticsServiceImpl implements StaticsService {
         return new StaticsRes(
                 howManyUsedCount,
                 top5Favorites,
-                usedPlace,
-                usedWhen,
+                places,
+                times,
                 parsedEmergencyHistory
         );
     }

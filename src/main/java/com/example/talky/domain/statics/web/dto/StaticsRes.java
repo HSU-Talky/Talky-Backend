@@ -1,15 +1,13 @@
 package com.example.talky.domain.statics.web.dto;
 
-import com.example.talky.domain.favorites.entity.Favorite;
 
 import java.util.List;
-import java.util.Map;
 
 public record StaticsRes(
         List<UsedCount> howManyUsed,
         List<Favorites> top5Used,
         List<Places> usedPlace,
-        Map<String, Long> usedWhen,
+        List<Times> usedWhen,
         List<History> histories
 ) {
     public record Favorites (
