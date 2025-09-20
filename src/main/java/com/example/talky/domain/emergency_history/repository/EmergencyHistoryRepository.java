@@ -13,11 +13,12 @@ public interface EmergencyHistoryRepository extends JpaRepository<EmergencyHisto
 select
     eh
 from EmergencyHistory eh
-join NormalUser n
+LEFT JOIN eh.user n
 where n.id = :normalId
     and eh.createdAt >= :firstDay
 """)
     List<EmergencyHistory> findAllByNormalId(
+            @Param("normalId") Long normalId,
             @Param("firstDay")LocalDateTime firstDay
             );
 }

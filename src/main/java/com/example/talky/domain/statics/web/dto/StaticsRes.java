@@ -7,11 +7,16 @@ import java.util.Map;
 
 public record StaticsRes(
         List<UsedCount> howManyUsed,
-        List<Favorite> top5Used,
+        List<Favorites> top5Used,
         Map<String, Long> usedPlace,
         Map<String, Long> usedWhen,
         List<History> histories
 ) {
+    public record Favorites (
+            Long favoriteId,
+            String sentence,
+            Integer count
+    ) {}
     public record UsedCount(
             String date,
             Long value
