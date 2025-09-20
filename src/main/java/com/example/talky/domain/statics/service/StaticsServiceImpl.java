@@ -64,6 +64,13 @@ public class StaticsServiceImpl implements StaticsService {
                 .filter(s -> s.getCreatedAt().toLocalDate().isEqual(LocalDateTime.now().toLocalDate()))
                 .collect(Collectors.groupingBy(Speech::getPlace, Collectors.counting()));
 
+        List<StaticsRes.Places> places = usedPlace.entrySet().stream()
+                .map(p -> new StaticsRes.Places(
+                        p.getKey(),
+                        p.getValue()
+                ))
+                .toList();
+
         // 사용한 시각과 같은 날짜의 사용 시간대를 커스텀 함수로 변환
         Map<String, Long> usedWhen = pickSpeech.stream()
                 .filter(s -> s.getCreatedAt().toLocalDate().isEqual(LocalDateTime.now().toLocalDate()))

@@ -8,7 +8,7 @@ import java.util.Map;
 public record StaticsRes(
         List<UsedCount> howManyUsed,
         List<Favorites> top5Used,
-        Map<String, Long> usedPlace,
+        List<Places> usedPlace,
         Map<String, Long> usedWhen,
         List<History> histories
 ) {
@@ -21,6 +21,17 @@ public record StaticsRes(
             String date,
             Long value
     ) {}
+
+    public record Places (
+        String place,
+        Long count
+    ) {}
+
+    public record Times(
+            String when,
+            Long count
+    ) {}
+
     public record History(
             String date,
             String time,
